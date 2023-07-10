@@ -1,10 +1,10 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <div :class="$style.title">Test Result Page</div>
+            <div :class="$style.title">Test Result</div>
             <div
                 :class="$style.box"
-                v-for="(result, index) in resultArray"
+                v-for="(result, index) in reverseResultArray"
                 :key="index"
             >
                 <div :class="$style.time">
@@ -32,6 +32,7 @@ import { ResultObject } from "@/structure/types";
 export default class TestResultHistoryView extends Vue {
     userId: string = this.$store.state.userId ?? "";
     resultArray: ResultObject[] = [];
+    reverseResultArray: ResultObject[] = [];
 
     mounted() {
         this.loadTestResult();
@@ -68,6 +69,8 @@ export default class TestResultHistoryView extends Vue {
 
         console.log(res.data.result);
         this.resultArray = res.data.result;
+
+        this.reverseResultArray = [...this.resultArray].reverse();
 
         this.$forceUpdate();
     }
@@ -109,8 +112,8 @@ export default class TestResultHistoryView extends Vue {
         }
 
         .box {
-            padding: 12px;
             margin: 16px 0px;
+            padding: 12px;
 
             border: 1px solid black;
             border-radius: 5px;

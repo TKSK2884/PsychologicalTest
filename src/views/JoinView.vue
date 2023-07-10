@@ -32,6 +32,11 @@
                     <div v-on:click="createAccount" :class="$style.button">
                         회원 가입
                     </div>
+
+                    <div
+                        v-on:click="loginWithKakao"
+                        :class="$style.kakaoLogin"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -42,12 +47,9 @@
 import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 import { api } from "@/api/api";
-// import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 
 @Component({
-    components: {
-        // HelloWorld,
-    },
+    components: {},
 })
 export default class JoinView extends Vue {
     inputID: string = "";
@@ -55,6 +57,9 @@ export default class JoinView extends Vue {
     inputCheckPassword: string = "";
 
     inputNickname: string = "";
+
+    accessKey = process.env.VUE_APP_KAKAO_ACCESS_KEY;
+    redirectURI = process.env.VUE_APP_KAKAO_REDIRECT_URI;
 
     createAccount() {
         if (this.inputID == "") {
@@ -76,7 +81,7 @@ export default class JoinView extends Vue {
         }
 
         api(
-            "join",
+            "memeber/join",
             "post",
             {
                 id: this.inputID,
@@ -108,6 +113,7 @@ export default class JoinView extends Vue {
         }
         alert("가입에 실패했습니다");
     }
+
     joinSuccess(res: any) {
         if (res == null) {
             alert("가입에 실패했습니다");
@@ -115,6 +121,13 @@ export default class JoinView extends Vue {
         }
         this.$router.push("/login");
         return;
+    }
+
+    loginWithKakao() {
+        const url: string = `https://kauth.kakao.com/oauth/authorize?client_id=${this.accessKey}&redirect_uri=${this.redirectURI}&response_type=code`;
+
+        console.log(url);
+        window.open(url, "", "width=600,height=600");
     }
 }
 </script>
@@ -180,6 +193,18 @@ export default class JoinView extends Vue {
 
                     border: 1px solid rgb(58, 58, 58);
                     border-radius: 4px;
+
+                    @include setCenter;
+                }
+
+                .kakaoLogin {
+                    width: 150px;
+                    height: 40px;
+
+                    background-image: url("@/assets/kakao_login_medium.png");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center center;
 
                     @include setCenter;
                 }

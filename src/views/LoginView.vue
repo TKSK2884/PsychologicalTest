@@ -57,7 +57,7 @@ export default class LoginView extends Vue {
             return alert("비밀번호를 입력해주세요");
         }
         api(
-            "login",
+            "memeber/login",
             "post",
             {
                 id: this.inputID,
