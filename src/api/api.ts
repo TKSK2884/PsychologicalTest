@@ -40,5 +40,5 @@ export function api(
 }
 
 function getAPIURL(): string {
-    return "http://localhost:3000/";
+    return process.env.VUE_API_URL;
 }
