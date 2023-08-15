@@ -190,8 +190,6 @@ export default class TestView extends Vue {
 
         this.updateProgressApi(selectNumber);
 
-        console.log(selectNumber);
-
         this.progressNumber += 1;
     }
 

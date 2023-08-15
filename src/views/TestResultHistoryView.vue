@@ -54,8 +54,6 @@ export default class TestResultHistoryView extends Vue {
     loadError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        alert(errorCode);
-
         if (errorCode == 500) {
             alert("서버 에러");
             return;
@@ -67,7 +65,6 @@ export default class TestResultHistoryView extends Vue {
     loadSuccess(res: any) {
         if (res == null) return;
 
-        console.log(res.data.result);
         this.resultArray = res.data.result;
 
         this.reverseResultArray = [...this.resultArray].reverse();
