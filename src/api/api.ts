@@ -40,5 +40,5 @@ export function api(
 }
 
 function getAPIURL(): string {
-    return process.env.VUE_API_URL;
+    return process.env.VUE_APP_API_URL;
 }
