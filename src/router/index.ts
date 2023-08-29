@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import { component } from "vue/types/umd";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import OAuthView from "../views/OAuthView.vue";

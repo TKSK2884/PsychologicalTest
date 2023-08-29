@@ -2,3 +2,54 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+@font-face {
+    font-family: "Pretendard-Regular";
+    src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+        format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+//login & join button
+
+$button-width: 300px;
+
+@mixin authButton {
+    min-width: $button-width;
+
+    margin-top: 30px;
+
+    padding: 12px 18px;
+
+    border-radius: 6px;
+
+    font-size: 18px;
+
+    color: #ffffff;
+    background-color: #000000;
+
+    text-align: center;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+// login & join kakaoButton
+$kakao-button-width: 180px;
+$kakao-button-height: 60px;
+
+@mixin kakaoButton {
+    width: $kakao-button-width;
+    height: $kakao-button-height;
+
+    background-image: url("@/assets/kakao_login_medium.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    &:hover {
+        cursor: pointer;
+    }
+}

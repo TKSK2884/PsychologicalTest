@@ -1,23 +1,35 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <div :class="$style.coverBox">
+            <div :class="$style.form">
                 <div :class="$style.title">로그인</div>
+                <div :class="$style.infoBox">
+                    <div :class="$style.info">
+                        아이디 비밀번호 입력하기 귀찮으시죠?
+                    </div>
+                    <div :class="$style.info">
+                        1초만에 카카오 로그인 해 보세요
+                    </div>
+                </div>
                 <div :class="$style.box">
+                    <div :class="$style.textLabel">ID</div>
                     <input
                         v-model="inputID"
                         :class="$style.input"
                         type="text"
-                        placeholder="아이디 입력"
                     />
+                    <div :class="$style.textLabel">Password</div>
                     <input
                         v-model="inputPassword"
                         :class="$style.input"
                         type="password"
-                        placeholder="비밀번호 입력"
                     />
                     <div v-on:click="tryLogin" :class="$style.button">
                         로그인
+                    </div>
+                    <div :class="$style.orBox">
+                        <div :class="$style.orBar"></div>
+                        <div :class="$style.orText">또는</div>
                     </div>
                     <div
                         v-on:click="loginWithKakao"
@@ -117,7 +129,7 @@ export default class LoginView extends Vue {
 
         @include setCenter;
 
-        .coverBox {
+        .form {
             max-width: 360px;
 
             padding: 30px;
@@ -125,9 +137,17 @@ export default class LoginView extends Vue {
             border: none;
             border-radius: 10px;
 
-            box-shadow: 0px 0px 1px 0px rgb(87, 87, 87);
-
             @include setCenter;
+
+            .infoBox {
+                margin-bottom: 20px;
+
+                text-align: center;
+
+                .info {
+                    color: #6b6b6b;
+                }
+            }
 
             .title {
                 padding: 20px 0px;
@@ -146,40 +166,61 @@ export default class LoginView extends Vue {
 
                 @include setCenter;
 
-                .input {
-                    padding: 8px;
+                .textLabel {
+                    margin-left: 10px;
+                }
 
+                .orBox {
+                    position: relative;
+
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+
+                    text-align: center;
+
+                    .orBar {
+                        position: absolute;
+
+                        z-index: -1;
+                        width: 100%;
+
+                        top: 50%;
+
+                        border-bottom: 1px solid #a7a5a57e;
+                    }
+
+                    .orText {
+                        max-width: 60px;
+
+                        padding: 12px 10px;
+
+                        background-color: #ffffff;
+
+                        @include setCenter;
+                    }
+                }
+
+                .input {
                     margin-top: 10px;
                     margin-left: 10px;
 
+                    padding: 4px;
+
                     border: none;
-                    border-bottom: solid 1px rgb(107, 107, 107);
-                    border-radius: 2px;
+                    border-bottom: solid 1px #a7a5a57e;
+                    // border-radius: 2px;
 
                     outline: none;
                 }
 
                 .button {
-                    padding: 6px 18px;
-
-                    margin-top: 20px;
-
-                    border: 1px solid rgb(58, 58, 58);
-                    border-radius: 4px;
+                    @include authButton;
 
                     @include setCenter;
                 }
 
                 .kakaoLogin {
-                    width: 150px;
-                    height: 40px;
-
-                    margin-top: 10px;
-
-                    background-image: url("@/assets/kakao_login_medium.png");
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    background-position: center center;
+                    @include kakaoButton;
 
                     @include setCenter;
                 }

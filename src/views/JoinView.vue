@@ -1,38 +1,49 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <div :class="$style.coverBox">
+            <div :class="$style.form">
                 <div :class="$style.title">회원가입</div>
+                <div :class="$style.infoBox">
+                    <div :class="$style.info">
+                        회원 가입 시
+                        <span :class="$style.underLine">이용약관</span> 및
+                        <span :class="$style.underLine">개인정보취급방침</span
+                        >에
+                    </div>
+                    <div :class="$style.info">동의하는 것으로 간주합니다.</div>
+                </div>
                 <div :class="$style.box">
+                    <div :class="$style.textLabel">ID</div>
                     <input
                         v-model="inputID"
                         :class="$style.input"
                         type="text"
-                        placeholder="아이디 입력"
                     />
+                    <div :class="$style.textLabel">Password</div>
                     <input
                         v-model="inputPassword"
                         :class="$style.input"
                         type="password"
-                        placeholder="비밀번호 입력"
                     />
+                    <div :class="$style.textLabel">Password Confirm</div>
                     <input
                         v-model="inputCheckPassword"
                         :class="$style.input"
                         type="password"
-                        placeholder="비밀번호 확인"
                     />
-
+                    <div :class="$style.textLabel">Nickname</div>
                     <input
                         v-model="inputNickname"
                         :class="$style.input"
                         type="text"
-                        placeholder="닉네임 입력"
                     />
                     <div v-on:click="createAccount" :class="$style.button">
                         회원 가입
                     </div>
-
+                    <div :class="$style.orBox">
+                        <div :class="$style.orBar"></div>
+                        <div :class="$style.orText">또는</div>
+                    </div>
                     <div
                         v-on:click="loginWithKakao"
                         :class="$style.kakaoLogin"
@@ -45,7 +56,6 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import axios from "axios";
 import { api } from "@/api/api";
 
 @Component({
@@ -143,15 +153,10 @@ export default class JoinView extends Vue {
 
         @include setCenter;
 
-        .coverBox {
+        .form {
             max-width: 360px;
 
             padding: 30px;
-
-            border: none;
-            border-radius: 10px;
-
-            box-shadow: 0px 0px 1px 0px rgb(87, 87, 87);
 
             @include setCenter;
 
@@ -159,9 +164,24 @@ export default class JoinView extends Vue {
                 padding: 20px 0px;
 
                 font-size: 24px;
-                font-weight: bold;
 
                 text-align: center;
+            }
+
+            .infoBox {
+                margin-bottom: 20px;
+
+                text-align: center;
+
+                .info {
+                    color: #6b6b6b;
+
+                    .underLine {
+                        text-decoration: underline;
+
+                        color: #000000;
+                    }
+                }
             }
 
             .box {
@@ -172,41 +192,65 @@ export default class JoinView extends Vue {
 
                 @include setCenter;
 
-                .input {
-                    padding: 8px;
+                .textLabel {
+                    margin-left: 10px;
+                }
 
+                .orBox {
+                    position: relative;
+
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+
+                    text-align: center;
+
+                    .orBar {
+                        position: absolute;
+
+                        z-index: -1;
+                        width: 100%;
+
+                        top: 50%;
+
+                        border-bottom: 1px solid #a7a5a57e;
+                    }
+
+                    .orText {
+                        max-width: 60px;
+
+                        padding: 12px 10px;
+
+                        background-color: #ffffff;
+
+                        @include setCenter;
+                    }
+                }
+
+                .input {
                     margin-top: 10px;
                     margin-left: 10px;
 
+                    padding: 4px;
+
                     border: none;
-                    border-bottom: solid 1px rgb(107, 107, 107);
-                    border-radius: 2px;
+                    border-bottom: solid 1px #a7a5a57e;
 
                     outline: none;
                 }
 
                 .button {
-                    padding: 6px 18px;
-
-                    margin-top: 16px;
-                    margin-bottom: 16px;
-
-                    border: 1px solid rgb(58, 58, 58);
-                    border-radius: 4px;
-
+                    @include authButton;
                     @include setCenter;
                 }
 
                 .kakaoLogin {
-                    width: 150px;
-                    height: 40px;
-
-                    background-image: url("@/assets/kakao_login_medium.png");
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                    background-position: center center;
+                    @include kakaoButton;
 
                     @include setCenter;
+                }
+
+                .kakaoLogin:hover {
+                    cursor: pointer;
                 }
             }
         }

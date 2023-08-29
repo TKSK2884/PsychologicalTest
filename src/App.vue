@@ -1,7 +1,9 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <Header />
+            <div :class="$style.headerSection" v-if="isHeaderEnable">
+                <Header />
+            </div>
             <router-view />
         </div>
     </div>
@@ -16,8 +18,24 @@ import Header from "@/components/Header.vue";
         Header,
     },
 })
-export default class AppView extends Vue {}
+export default class AppView extends Vue {
+    isHeaderEnable: boolean = true;
+
+    @Watch("$route")
+    onRouteChange() {
+        if (this.$route.path != "/") {
+            this.isHeaderEnable = true;
+        } else {
+            this.isHeaderEnable = false;
+        }
+    }
+
+    mounted() {
+        this.onRouteChange();
+    }
+}
 </script>
+
 <style lang="scss" module>
 .index {
     width: 100%;
@@ -26,14 +44,23 @@ export default class AppView extends Vue {}
     .container {
         width: 100%;
         height: auto;
+
+        .headerSection {
+            width: 100%;
+            height: auto;
+        }
     }
 }
 </style>
 
 <style lang="scss">
+@import "@/assets/utils.scss";
+
 * {
     box-sizing: border-box;
-    font-family: "Noto Sans KR", sans-serif;
+    // font-family: "Noto Sans KR", sans-serif;
+
+    font-family: "Pretendard-Regular", sans-serif;
 }
 
 html,

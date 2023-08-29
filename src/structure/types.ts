@@ -11,7 +11,7 @@ export interface Question {
     selection: Selection[];
 }
 
-interface Selection {
+export interface Selection {
     title: string;
     params?: SelectionParams;
 }
@@ -28,4 +28,9 @@ export interface ResultObject {
     select_test: string;
     content: string;
     time_date: Date;
+}
+
+export interface testList {
+    id: number;
+    test_name: string;
 }

@@ -1,21 +1,39 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <div :class="$style.title">Test Result</div>
-            <div
-                :class="$style.box"
-                v-for="(result, index) in reverseResultArray"
-                :key="index"
-            >
-                <div :class="$style.time">
-                    {{ getTimeDate(result) }}
+            <div :class="$style.section">
+                <div :class="$style.infoBox">
+                    <div :class="$style.title">테스트 결과 목록</div>
+                    <div :class="$style.info">
+                        테스트 결과는 XX개까지만 표시됩니다.
+                    </div>
                 </div>
-                <div :class="$style.selectTest">
-                    {{ getSelectTest(result) }}
+                <!-- 5개로 제한해야함  -->
+                <div
+                    :class="$style.box"
+                    v-for="(result, index) in reverseResultArray"
+                    :key="index"
+                >
+                    <div :class="$style.testTitle">
+                        <div :class="$style.selectTest">
+                            {{ getSelectTest(result) }}
+                        </div>
+                        <div :class="$style.time">
+                            {{ getTimeDate(result) }}
+                        </div>
+                    </div>
+
+                    <div :class="$style.content">
+                        {{ getContent(result) }}
+                    </div>
+
+                    <div :class="$style.arrowButton"></div>
                 </div>
-                <div :class="$style.content">
-                    {{ getContent(result) }}
-                </div>
+            </div>
+            <div :class="$style.buttonBox">
+                <router-link :to="`/`">
+                    <div :class="$style.button">처음으로</div>
+                </router-link>
             </div>
         </div>
     </div>
@@ -102,18 +120,97 @@ export default class TestResultHistoryView extends Vue {
 
         margin-left: auto;
         margin-right: auto;
-        .title {
-            margin: 12px 0px;
+        .section {
+            .infoBox {
+                margin-top: 60px;
 
-            font-size: 24px;
+                text-align: center;
+                .title {
+                    margin: 12px 0px;
+
+                    font-size: 24px;
+                }
+                .info {
+                    font-size: 16px;
+                }
+            }
+
+            .box {
+                display: flex;
+
+                width: 450px;
+
+                margin: 16px 0px;
+                padding: 12px;
+
+                border-bottom: 1px solid #7272727c;
+
+                @include setCenter;
+
+                .testTitle {
+                    width: 150px;
+
+                    .selectTest {
+                        font-size: 16px;
+                    }
+                    .time {
+                        font-size: 12px;
+                    }
+                }
+
+                .content {
+                    width: 250px;
+                    height: 30px;
+
+                    font-size: 12px;
+
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            .arrowButton {
+                padding: 6px;
+
+                margin-left: auto;
+
+                background-image: url("/src/assets/arrow.png");
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+            }
         }
 
-        .box {
-            margin: 16px 0px;
-            padding: 12px;
+        .buttonBox {
+            margin-top: 20px;
 
-            border: 1px solid black;
-            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+
+            a {
+                text-decoration: none;
+
+                color: black;
+
+                .button {
+                    min-width: 180px;
+                    min-height: 60px;
+
+                    margin: 0 10px;
+
+                    padding: 20px;
+
+                    border-radius: 10px;
+
+                    box-shadow: 0px 0px 1px #727272;
+
+                    text-align: center;
+                }
+            }
         }
     }
 }
