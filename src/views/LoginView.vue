@@ -9,6 +9,7 @@
                     </div>
                     <div :class="$style.info">
                         1초만에 카카오 로그인 해 보세요
+                        {{ $route.params.result }}
                     </div>
                 </div>
                 <div :class="$style.box">
@@ -24,15 +25,19 @@
                         :class="$style.input"
                         type="password"
                     />
-                    <div v-on:click="tryLogin" :class="$style.button">
+                    <div v-on:click="tryLogin()" :class="$style.button">
                         로그인
                     </div>
+
                     <div :class="$style.orBox">
                         <div :class="$style.orBar"></div>
                         <div :class="$style.orText">또는</div>
                     </div>
+                    <div v-on:click="goJoinPage()" :class="$style.joinBox">
+                        <div :class="$style.join">회원가입</div>
+                    </div>
                     <div
-                        v-on:click="loginWithKakao"
+                        v-on:click="loginWithKakao()"
                         :class="$style.kakaoLogin"
                     ></div>
                 </div>
@@ -44,6 +49,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { api } from "@/api/api";
+import router from "@/router";
 
 @Component({
     components: {},
@@ -55,9 +61,17 @@ export default class LoginView extends Vue {
     accessKey = process.env.VUE_APP_KAKAO_ACCESS_KEY;
     redirectURI = process.env.VUE_APP_KAKAO_REDIRECT_URI;
 
+    saveResultToken: string = (this.$route.query.saveResult as string) ?? "";
+
     mounted() {
-        if (this.$store.state.accessToken != undefined) {
+        if (sessionStorage.getItem("accessToken") != undefined) {
+            alert("이미 로그인 되어있습니다.");
+
             this.$router.push("/");
+        }
+
+        if (this.saveResultToken != "") {
+            sessionStorage.setItem("saveResultToken", this.saveResultToken);
         }
     }
 
@@ -85,7 +99,7 @@ export default class LoginView extends Vue {
         let errorCode = err.response.data.errorCode;
 
         if (errorCode == 500) {
-            alert("서버 오류");
+            alert("서버 에러");
             return;
         }
 
@@ -93,26 +107,28 @@ export default class LoginView extends Vue {
             alert("아이디 혹은 비밀번호를 확인 해주세요");
             return;
         }
-        alert("로그인에 실패하였습니다.");
+
+        alert("알 수 없는 에러 다시 시도해주세요");
         return;
     }
 
     loginSuccess(res: any) {
         if (res == null) return;
 
-        let token: string = res.data.token as string;
-        let userId: string = res.data.id as string;
+        let accessToken: string = res.data.token as string;
 
-        this.$store.commit("setAccessToken", token);
-        this.$store.commit("setUserId", userId);
+        sessionStorage.setItem("accessToken", accessToken);
 
         this.$router.push("/");
+    }
+
+    goJoinPage() {
+        this.$router.push("/join");
     }
 
     loginWithKakao() {
         const url: string = `https://kauth.kakao.com/oauth/authorize?client_id=${this.accessKey}&redirect_uri=${this.redirectURI}&response_type=code`;
 
-        console.log(url);
         window.open(url, "", "width=600,height=600");
     }
 }
@@ -130,12 +146,10 @@ export default class LoginView extends Vue {
         @include setCenter;
 
         .form {
-            max-width: 360px;
+            max-width: 600px;
 
+            margin-top: 20px;
             padding: 30px;
-
-            border: none;
-            border-radius: 10px;
 
             @include setCenter;
 
@@ -145,6 +159,8 @@ export default class LoginView extends Vue {
                 text-align: center;
 
                 .info {
+                    font-size: 18px;
+
                     color: #6b6b6b;
                 }
             }
@@ -152,14 +168,14 @@ export default class LoginView extends Vue {
             .title {
                 padding: 20px 0px;
 
-                font-size: 24px;
+                font-size: 40px;
                 font-weight: bold;
 
                 text-align: center;
             }
 
             .box {
-                max-width: 300px;
+                max-width: 240px;
 
                 display: flex;
                 flex-direction: column;
@@ -167,7 +183,9 @@ export default class LoginView extends Vue {
                 @include setCenter;
 
                 .textLabel {
-                    margin-left: 10px;
+                    margin-bottom: 4px;
+
+                    font-size: 16px;
                 }
 
                 .orBox {
@@ -190,25 +208,22 @@ export default class LoginView extends Vue {
                     }
 
                     .orText {
-                        max-width: 60px;
+                        max-width: 50px;
 
                         padding: 12px 10px;
 
                         background-color: #ffffff;
+                        color: #999999;
 
                         @include setCenter;
                     }
                 }
 
                 .input {
-                    margin-top: 10px;
-                    margin-left: 10px;
-
                     padding: 4px;
 
                     border: none;
                     border-bottom: solid 1px #a7a5a57e;
-                    // border-radius: 2px;
 
                     outline: none;
                 }
@@ -217,6 +232,23 @@ export default class LoginView extends Vue {
                     @include authButton;
 
                     @include setCenter;
+                }
+
+                .joinBox {
+                    margin-bottom: 20px;
+
+                    text-align: center;
+
+                    .join {
+                        font-size: 16px;
+
+                        color: #6b6b6b;
+
+                        &:hover {
+                            text-decoration: underline;
+                            cursor: pointer;
+                        }
+                    }
                 }
 
                 .kakaoLogin {

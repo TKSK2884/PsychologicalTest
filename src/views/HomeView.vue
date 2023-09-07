@@ -9,7 +9,6 @@
             </div>
             <div :class="$style.section">
                 <div :class="$style.frame">
-                    <!-- v-for로 만들기 -->
                     <div
                         :class="$style.box"
                         v-for="test in getTestArray"
@@ -34,8 +33,8 @@
                 </div>
             </div>
             <div v-else :class="[$style.textBox, $style.infoBox]">
-                <div :class="$style.info">로그인 계정:</div>
-                <div :class="$style.bar">|</div>
+                <div :class="$style.info">로그인 계정:{{ loginNickname }}</div>
+
                 <div :class="$style.info">테스트 결과는 저장됩니다</div>
             </div>
 
@@ -44,11 +43,13 @@
                     <div :class="$style.link">테스트 결과 보기</div>
                 </router-link>
                 <div :class="$style.bar">|</div>
-                <router-link :to="`/`">
-                    <div v-on:click="logout()" :class="$style.link">
-                        로그아웃
-                    </div>
-                </router-link>
+
+                <div
+                    v-on:click="logout()"
+                    :class="[$style.link, $style.logout]"
+                >
+                    로그아웃
+                </div>
             </div>
 
             <div :class="$style.linkBox" v-else>
@@ -69,6 +70,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { RouterLink } from "vue-router";
 import { api } from "@/api/api";
 import { testList } from "@/structure/types";
+import router from "@/router";
 
 @Component({
     components: {},
@@ -76,27 +78,71 @@ import { testList } from "@/structure/types";
 export default class HomeView extends Vue {
     selectedTest: string = "";
     testListArray: testList[] = [];
+    loginNickname: string = "";
 
-    selectTest() {
-        this.selectedTest = "1";
-    }
-
-    get isLogIn(): boolean {
-        return this.$store.state.accesToken != undefined;
-    }
+    isLogIn: boolean = false;
+    accessToken: string = sessionStorage.getItem("accessToken") ?? "";
+    saveResultToken: string = sessionStorage.getItem("saveResultToken") ?? "";
 
     logout() {
-        this.$store.commit("setAccessToken", undefined);
-        this.$store.commit("setUserId", undefined);
+        sessionStorage.clear();
+
+        router.go(0);
     }
 
-    cleanLocalStorage() {
-        localStorage.clear();
-        this.$store.commit("setProgressToken", undefined);
+    getUserNickname() {
+        if (this.accessToken == "") {
+            return;
+        } else {
+            api(
+                "member/info",
+                "get",
+                {
+                    accessToken: this.accessToken,
+                },
+                this
+            )
+                .catch(this.getUserNicknameError)
+                .then(this.getUserNicknameSuccess);
+        }
+    }
+
+    getUserNicknameError(err: any) {
+        let errorCode = err.response.data.errorCode;
+
+        if (errorCode == 400) {
+            alert("잘못된 요청입니다.");
+            return;
+        }
+
+        if (errorCode == 500) {
+            alert("서버 오류");
+            return;
+        }
+
+        return;
+    }
+
+    getUserNicknameSuccess(res: any) {
+        if (res == null) return;
+
+        let nickname: string = res.data.nickname as string;
+        this.loginNickname = nickname;
+
+        this.isLogIn = true;
+
+        this.$forceUpdate();
     }
 
     loadTestList() {
-        api("test/list", "get", {}, this)
+        api(
+            "test/list",
+            "get",
+            {
+                loadTestList: true,
+            },
+            this
+        )
             .catch(this.loadError)
             .then(this.loadSuccess);
     }
@@ -105,6 +151,11 @@ export default class HomeView extends Vue {
         let errorCode = err.response.data.errorCode;
 
         alert(errorCode);
+
+        if (errorCode == 400) {
+            alert("잘못된 요청입니다.");
+            return;
+        }
 
         if (errorCode == 500) {
             alert("서버 오류");
@@ -122,6 +173,44 @@ export default class HomeView extends Vue {
         this.$forceUpdate();
     }
 
+    saveResult() {
+        api(
+            "test/result/save",
+            "post",
+            {
+                accessToken: this.accessToken,
+                saveResultToken: this.saveResultToken,
+            },
+            this
+        )
+            .catch(this.saveResultError)
+            .then(this.saveResultSuccess);
+    }
+
+    saveResultError(err: any) {
+        let errorCode = err.response.data.errorCode;
+
+        if (errorCode == 400) {
+            alert("잘못된 요청입니다.");
+            return;
+        }
+
+        if (errorCode == 500) {
+            alert("서버 오류");
+            return;
+        }
+
+        return;
+    }
+
+    saveResultSuccess(res: any) {
+        if (res == null) return;
+
+        sessionStorage.removeItem("saveResultToken");
+
+        alert("테스트 결과가 저장되었습니다.");
+    }
+
     get getTestArray(): testList[] {
         if (this.testListArray.length == 0) return [];
 
@@ -137,17 +226,20 @@ export default class HomeView extends Vue {
     }
 
     mounted() {
-        let accessToken: string = localStorage.getItem("token") ?? "";
-        let userId: string = localStorage.getItem("user_id") ?? "";
+        let accessToken: string = localStorage.getItem("accessToken") ?? "";
 
-        if (accessToken != "" && userId != "") {
-            this.$store.commit("setAccessToken", accessToken);
-            this.$store.commit("setUserId", userId);
-
-            localStorage.removeItem("token");
-            localStorage.removeItem("user_id");
+        if (accessToken != "") {
+            localStorage.removeItem("accessToken");
+            sessionStorage.setItem("accessToken", accessToken);
         }
 
+        if (this.accessToken != "") {
+            this.getUserNickname();
+
+            if (this.saveResultToken != "") {
+                this.saveResult();
+            }
+        }
         this.loadTestList();
     }
 }
@@ -167,10 +259,10 @@ export default class HomeView extends Vue {
         margin-right: auto;
 
         .logo {
-            width: 100px;
-            height: 100px;
+            width: 70px;
+            height: 70px;
 
-            margin-top: 200px;
+            margin-top: 120px;
 
             background-image: url("/src/assets/logo.png");
             background-repeat: no-repeat;
@@ -181,15 +273,15 @@ export default class HomeView extends Vue {
         }
 
         .title {
-            margin-top: 20px;
+            margin-top: 10px;
 
-            font-size: 24px;
+            font-size: 60px;
 
             text-align: center;
         }
 
         .textBox {
-            margin-top: 20px;
+            margin-top: 10px;
 
             font-size: 12px;
 
@@ -197,17 +289,6 @@ export default class HomeView extends Vue {
 
             .underLine {
                 text-decoration: underline;
-            }
-        }
-
-        .infoBox {
-            margin-top: 20px;
-            margin-bottom: 20px;
-
-            .info {
-                padding: 2px;
-
-                font-size: 16px;
             }
         }
 
@@ -224,14 +305,22 @@ export default class HomeView extends Vue {
 
                 color: #727272;
             }
+
+            .logout {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
         }
 
         .copyright {
-            margin-top: 20px;
+            margin-top: 2px;
 
-            font-size: 12px;
+            font-size: 14px;
 
             text-align: center;
+
+            color: #666666;
         }
 
         .section {
@@ -239,15 +328,17 @@ export default class HomeView extends Vue {
                 display: flex;
                 flex-direction: column-reverse;
 
+                margin-top: 70px;
+
                 .box {
                     @include setCenter;
 
                     .testLink {
                         width: 300px;
 
-                        margin-top: 20px;
+                        margin-top: 16px;
 
-                        padding: 12px 20px;
+                        padding: 16px 20px;
 
                         border-radius: 5px;
 
@@ -269,12 +360,17 @@ export default class HomeView extends Vue {
             }
         }
 
-        .input {
-            padding: 20px;
-        }
+        .infoBox {
+            margin-top: 36px;
+            margin-bottom: 48px;
 
-        .button {
-            padding: 20px;
+            color: #666666;
+
+            .info {
+                padding: 2px;
+
+                font-size: 16px;
+            }
         }
     }
 }

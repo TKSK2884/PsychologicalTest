@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.index">
-        <div :class="$style.progressBar">
+        <div v-if="!resultComplete" :class="$style.progressBar">
             <div :class="$style.gauge">
                 <div
                     :style="{
@@ -19,11 +19,8 @@
             </div>
         </div>
         <div :class="$style.container">
-            <div :class="$style.section">
-                <div
-                    v-if="!pendingResult && !resultComplete"
-                    :class="$style.mark"
-                ></div>
+            <div v-if="!resultComplete" :class="$style.section">
+                <div v-if="!pendingResult" :class="$style.mark"></div>
                 <div :class="$style.title">
                     {{ getTestTitle }}
                 </div>
@@ -50,10 +47,14 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="!resultComplete" :class="$style.resultBox">
-                        <Result :result="result" />
-                    </div>
                 </div>
+            </div>
+            <div v-if="resultComplete" :class="$style.resultBox">
+                <Result
+                    :result="result"
+                    :selectTestID="selectTest"
+                    :progressToken="progressToken"
+                />
             </div>
         </div>
     </div>
@@ -74,10 +75,11 @@ import Result from "@/components/Result.vue";
 export default class TestView extends Vue {
     progressToken: string =
         this.$store.state.progressToken ??
-        localStorage.getItem("progress_token") ??
+        localStorage.getItem("progressToken") ??
         "";
-    userId: string = this.$store.state.userId ?? "";
+    accessToken: string = sessionStorage.getItem("accessToken") ?? "";
     selectTest: string = (this.$route.query.selectTest ?? "") as string;
+    progress: string = "";
 
     result: string = "";
     pendingResult: boolean = false;
@@ -88,16 +90,7 @@ export default class TestView extends Vue {
             question_type: 0,
             parameters: [],
         },
-        questions: [
-            {
-                title: "",
-                selection: [
-                    {
-                        title: "",
-                    },
-                ],
-            },
-        ],
+        questions: [],
     };
 
     progressNumber: number = 0;
@@ -143,14 +136,27 @@ export default class TestView extends Vue {
         let token = res.data.token as string;
         this.test = res.data.test;
 
+        let testName: string = res.data.test_name as string;
+
         if (this.progressToken == "") {
             this.progressToken = token;
         }
 
         if ((this.progressToken ?? "") == "") return;
 
-        this.$store.commit("setProgressToken", this.progressToken);
-        localStorage.setItem("progress_token", `${this.progressToken}`);
+        this.progress = res.data.progress ?? "";
+
+        if (this.progress != "") {
+            this.progressNumber = this.progress.length;
+            if (this.progressNumber > this.test.questions?.length) {
+                this.progressNumber = this.test.questions?.length ?? 0;
+            }
+        }
+
+        this.$store.commit("setProgressToken", this.progressToken); // ??
+        localStorage.setItem("progressToken", `${this.progressToken}`); // ??
+
+        this.$store.commit("setSelectedTestName", testName);
 
         this.$forceUpdate();
     }
@@ -173,7 +179,8 @@ export default class TestView extends Vue {
         if (this.test.questions?.length == this.progressNumber) {
             this.pendingResult = true;
             this.resultApi();
-            localStorage.removeItem("progress_token");
+
+            localStorage.removeItem("progressToken");
             this.$store.commit("setProgressToken", undefined);
             return;
         }
@@ -184,8 +191,8 @@ export default class TestView extends Vue {
             "test/result",
             "post",
             {
-                token: this.progressToken,
-                user_id: this.userId,
+                progressToken: this.progressToken,
+                accessToken: this.accessToken,
             },
             this
         )
@@ -211,7 +218,7 @@ export default class TestView extends Vue {
             this.test.questions[this.progressNumber]?.title ?? "";
 
         if (this.resultComplete) {
-            return "결과";
+            return "";
         }
 
         return title;
@@ -239,6 +246,10 @@ export default class TestView extends Vue {
 
     mounted() {
         this.loadTest();
+    }
+
+    beforeDestroy() {
+        this.$store.commit("setSelectedTestName", undefined);
     }
 }
 </script>
@@ -274,10 +285,7 @@ export default class TestView extends Vue {
     }
 
     .container {
-        width: 800px;
-
-        margin-left: auto;
-        margin-right: auto;
+        @include setCenter;
 
         .section {
             margin-top: 80px;
@@ -325,6 +333,11 @@ export default class TestView extends Vue {
                         border-radius: 5px;
 
                         box-shadow: 0px 0px 1px #727272;
+
+                        :hover {
+                            background-color: #63ac9b;
+                            color: #ffffff;
+                        }
                     }
                 }
                 .pendigBox {
@@ -354,8 +367,10 @@ export default class TestView extends Vue {
 }
 .ldio-r0kv4ehu2ae div {
     position: absolute;
+
     width: 50px;
     height: 50px;
+
     border: 6px solid #666666;
     border-top-color: transparent;
     border-radius: 50%;
@@ -368,6 +383,7 @@ export default class TestView extends Vue {
 .loadingio-spinner-rolling-5ax215itman {
     width: 200px;
     height: 200px;
+
     display: inline-block;
     overflow: hidden;
     background: none;

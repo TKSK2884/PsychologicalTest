@@ -10,7 +10,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import { api } from "@/api/api";
 import { getUnwrappedQuery } from "@/utils/strings";
-import store from "@/store";
 
 @Component({
     components: {},
@@ -52,8 +51,8 @@ export default class OAuthView extends Vue {
         if (res == null) return;
 
         console.log(res.data.token);
-        localStorage.setItem("token", `${res.data.token}`);
-        localStorage.setItem("user_id", `${res.data.id}`);
+
+        localStorage.setItem("accessToken", `${res.data.token}`); // Home으로 보내줌
 
         window.opener.location.href = "/";
         window.parent.close();

@@ -154,8 +154,9 @@ export default class JoinView extends Vue {
         @include setCenter;
 
         .form {
-            max-width: 360px;
+            max-width: 600px;
 
+            margin-top: 20px;
             padding: 30px;
 
             @include setCenter;
@@ -163,7 +164,7 @@ export default class JoinView extends Vue {
             .title {
                 padding: 20px 0px;
 
-                font-size: 24px;
+                font-size: 40px;
 
                 text-align: center;
             }
@@ -174,6 +175,8 @@ export default class JoinView extends Vue {
                 text-align: center;
 
                 .info {
+                    font-size: 18px;
+
                     color: #6b6b6b;
 
                     .underLine {
@@ -185,7 +188,7 @@ export default class JoinView extends Vue {
             }
 
             .box {
-                max-width: 300px;
+                max-width: 240px;
 
                 display: flex;
                 flex-direction: column;
@@ -193,7 +196,9 @@ export default class JoinView extends Vue {
                 @include setCenter;
 
                 .textLabel {
-                    margin-left: 10px;
+                    margin-bottom: 4px;
+
+                    font-size: 16px;
                 }
 
                 .orBox {
@@ -216,20 +221,18 @@ export default class JoinView extends Vue {
                     }
 
                     .orText {
-                        max-width: 60px;
+                        max-width: 50px;
 
                         padding: 12px 10px;
 
                         background-color: #ffffff;
+                        color: #999999;
 
                         @include setCenter;
                     }
                 }
 
                 .input {
-                    margin-top: 10px;
-                    margin-left: 10px;
-
                     padding: 4px;
 
                     border: none;

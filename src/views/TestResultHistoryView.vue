@@ -1,41 +1,50 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <div :class="$style.section">
-                <div :class="$style.infoBox">
-                    <div :class="$style.title">테스트 결과 목록</div>
-                    <div :class="$style.info">
-                        테스트 결과는 XX개까지만 표시됩니다.
-                    </div>
-                </div>
-                <!-- 5개로 제한해야함  -->
-                <div
-                    :class="$style.box"
-                    v-for="(result, index) in reverseResultArray"
-                    :key="index"
-                >
-                    <div :class="$style.testTitle">
-                        <div :class="$style.selectTest">
-                            {{ getSelectTest(result) }}
-                        </div>
-                        <div :class="$style.time">
-                            {{ getTimeDate(result) }}
+            <div v-if="!isSelectedResult">
+                <div :class="$style.section">
+                    <div :class="$style.infoBox">
+                        <div :class="$style.title">테스트 결과 목록</div>
+                        <div :class="$style.info">
+                            테스트 결과는 5개까지만 표시됩니다.
                         </div>
                     </div>
+                    <div
+                        :class="$style.box"
+                        v-for="(result, index) in resultArray"
+                        :key="index"
+                    >
+                        <div :class="$style.testTitle">
+                            <div :class="$style.selectTest">
+                                {{ getSelectTest(result) }}
+                            </div>
+                            <div :class="$style.time">
+                                {{ getTimeDate(result) }}
+                            </div>
+                        </div>
 
-                    <div :class="$style.content">
-                        {{ getContent(result) }}
+                        <div :class="$style.content">
+                            {{ getContent(result) }}
+                        </div>
+
+                        <div
+                            v-on:click="getResult(result)"
+                            :class="$style.arrowButton"
+                        ></div>
                     </div>
-
-                    <div :class="$style.arrowButton"></div>
                 </div>
-            </div>
-            <div :class="$style.buttonBox">
-                <router-link :to="`/`">
-                    <div :class="$style.button">처음으로</div>
-                </router-link>
+                <div :class="$style.buttonBox">
+                    <router-link :to="`/`">
+                        <div :class="$style.button">처음으로</div>
+                    </router-link>
+                </div>
             </div>
         </div>
+        <Result
+            v-if="isSelectedResult"
+            :result="result"
+            :selectTestID="selectTestID"
+        />
     </div>
 </template>
 
@@ -43,25 +52,28 @@
 import { Component, Vue } from "vue-property-decorator";
 import { api } from "@/api/api";
 import { ResultObject } from "@/structure/types";
+import Result from "@/components/Result.vue";
 
 @Component({
-    components: {},
+    components: {
+        Result,
+    },
 })
 export default class TestResultHistoryView extends Vue {
-    userId: string = this.$store.state.userId ?? "";
+    userId: string = sessionStorage.getItem("userID") ?? "";
     resultArray: ResultObject[] = [];
     reverseResultArray: ResultObject[] = [];
-
-    mounted() {
-        this.loadTestResult();
-    }
+    isSelectedResult: boolean = false;
+    result: string = "";
+    selectTestID: number = 0;
+    accessToken: string = sessionStorage.getItem("accessToken") ?? "";
 
     loadTestResult() {
         api(
             "test/result/history",
             "get",
             {
-                user_id: this.userId,
+                accessToken: this.accessToken,
             },
             this
         )
@@ -83,20 +95,26 @@ export default class TestResultHistoryView extends Vue {
     loadSuccess(res: any) {
         if (res == null) return;
 
-        this.resultArray = res.data.result;
-
-        this.reverseResultArray = [...this.resultArray].reverse();
+        this.resultArray = res.data.result; //5개로 제한해야함
 
         this.$forceUpdate();
     }
 
-    getSelectTest(content: ResultObject) {
+    getResult(content: ResultObject) {
+        this.isSelectedResult = true;
+        this.result = content.content;
+        this.selectTestID = content.select_test_id;
+        return;
+    }
+
+    getSelectTest(content: ResultObject): string {
         return content.select_test ?? "";
     }
 
-    getContent(content: ResultObject) {
+    getContent(content: ResultObject): string {
         return content.content ?? "";
     }
+
     getTimeDate(content: ResultObject) {
         let timedate: Date = new Date(content.time_date ?? new Date());
 
@@ -104,7 +122,17 @@ export default class TestResultHistoryView extends Vue {
             timeZone: "Asia/Seoul",
         });
 
-        return convertedTimeDate;
+        let splitTimeDate: string = convertedTimeDate.split(". 오")[0];
+
+        return splitTimeDate;
+    }
+
+    getSelectTestID(content: ResultObject): number {
+        return content.select_test_id ?? 0;
+    }
+
+    mounted() {
+        this.loadTestResult();
     }
 }
 </script>
@@ -116,10 +144,7 @@ export default class TestResultHistoryView extends Vue {
     height: auto;
 
     .container {
-        width: 800px;
-
-        margin-left: auto;
-        margin-right: auto;
+        @include setCenter;
         .section {
             .infoBox {
                 margin-top: 60px;
@@ -136,19 +161,19 @@ export default class TestResultHistoryView extends Vue {
             }
 
             .box {
-                display: flex;
-
                 width: 450px;
 
                 margin: 16px 0px;
                 padding: 12px;
+
+                display: flex;
 
                 border-bottom: 1px solid #7272727c;
 
                 @include setCenter;
 
                 .testTitle {
-                    width: 150px;
+                    width: 120px;
 
                     .selectTest {
                         font-size: 16px;
@@ -182,6 +207,10 @@ export default class TestResultHistoryView extends Vue {
                 background-repeat: no-repeat;
                 background-size: contain;
                 background-position: center;
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
 

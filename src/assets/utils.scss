@@ -13,7 +13,7 @@
 
 //login & join button
 
-$button-width: 300px;
+$button-width: 240px;
 
 @mixin authButton {
     min-width: $button-width;
@@ -38,14 +38,14 @@ $button-width: 300px;
 
 // login & join kakaoButton
 $kakao-button-width: 180px;
-$kakao-button-height: 60px;
+$kakao-button-height: 40px;
 
 @mixin kakaoButton {
     width: $kakao-button-width;
     height: $kakao-button-height;
 
     background-image: url("@/assets/kakao_login_medium.png");
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
 

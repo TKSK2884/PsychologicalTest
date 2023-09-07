@@ -6,17 +6,12 @@
                     <router-link :to="`/`">
                         <div :class="$style.box">
                             <div :class="$style.logo"></div>
-                            <div
-                                v-on:click="cleanLocalStorage()"
-                                :class="$style.link"
-                            >
-                                GPTMind
-                            </div>
+                            <div :class="$style.link">GPTMind</div>
                         </div>
                     </router-link>
 
                     <div :class="[$style.text, $style.selectTest]">
-                        {{ selectedTest }}
+                        {{ selectedTestName }}
                     </div>
                 </div>
             </div>
@@ -25,25 +20,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { watch } from "vue";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({
     components: {},
 })
 export default class Header extends Vue {
-    selectedTest: string = "default";
+    selectedTestName: string = "";
 
-    get isLogIn(): boolean {
-        return this.$store.state.accesToken != undefined;
+    @Watch("$store.state.selectedTestName")
+    seachSelectedTestName() {
+        this.selectedTestName = this.$store.state.selectedTestName;
     }
-    logout() {
-        this.$store.commit("setAccessToken", undefined);
-        this.$store.commit("setUserId", undefined);
-    }
-    cleanLocalStorage() {
-        localStorage.clear();
-        this.$store.commit("setProgressToken", undefined);
-    }
+
+    mounted() {}
 }
 </script>
 
@@ -91,15 +82,14 @@ export default class Header extends Vue {
 
                     font-size: 32px;
 
-                    color: black;
+                    color: #000000;
                 }
             }
             .selectTest {
-                padding: 16px 32px;
+                margin-left: 18px;
+                padding: 6px;
 
-                font-size: 24px;
-
-                color: #ffffff;
+                font-size: 26px;
             }
         }
     }
