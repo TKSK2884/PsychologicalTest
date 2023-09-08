@@ -9,6 +9,7 @@ export default new Vuex.Store({
         accesToken: undefined,
         userId: undefined,
         selectedTestName: undefined,
+        url: undefined,
     },
     getters: {
         getProgressToken(state) {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
         },
         setSelectedTestName(state, test) {
             state.selectedTestName = test;
+        },
+        setUrl(state, url) {
+            state.url = url;
         },
     },
     actions: {},

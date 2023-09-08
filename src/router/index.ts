@@ -6,6 +6,7 @@ import OAuthView from "../views/OAuthView.vue";
 import JoinView from "../views/JoinView.vue";
 import TestView from "../views/TestView.vue";
 import TestResultHistoryView from "../views/TestResultHistoryView.vue";
+import PathFinderView from "../views/PathFinderView.vue";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes: Array<RouteConfig> = [
         path: "/test/result/history",
         name: "history",
         component: TestResultHistoryView,
+    },
+    {
+        path: "/path/finder",
+        name: "finder",
+        component: PathFinderView,
     },
 ];
 
