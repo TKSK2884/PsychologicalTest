@@ -82,9 +82,8 @@ export default class Result extends Vue {
         let testURL: string = `/test?selectTest=${this.selectTestID}`;
 
         if (testURL == this.$route.fullPath) {
-            return this.$router.go(0);
-            // this.$store.commit("setUrl", testURL);
-            // this.$router.push(`/path/finder`);
+            this.$store.commit("setUrl", testURL);
+            return this.$router.push(`/path/finder`);
         }
         return this.$router.push(testURL);
     }
@@ -93,9 +92,8 @@ export default class Result extends Vue {
         let historyURL: string = `/test/result/history`;
 
         if (historyURL == this.$route.fullPath) {
-            return this.$router.go(0);
-            // this.$store.commit("setUrl", historyURL);
-            // return this.$router.push(`/path/finder`);
+            this.$store.commit("setUrl", historyURL);
+            return this.$router.push(`/path/finder`);
         }
         return this.$router.push(historyURL);
     }
