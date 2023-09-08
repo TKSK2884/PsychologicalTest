@@ -82,7 +82,7 @@ export default class Result extends Vue {
         let testURL: string = `/test?selectTest=${this.selectTestID}`;
 
         if (testURL == this.$route.fullPath) {
-            this.$router.go(0);
+            window.location.reload();
         }
         this.$router.push(testURL);
     }
@@ -91,7 +91,7 @@ export default class Result extends Vue {
         let historyURL: string = `/test/result/history`;
 
         if (historyURL == this.$route.fullPath) {
-            this.$router.go(0);
+            window.location.reload();
         }
         this.$router.push(historyURL);
     }
