@@ -54,7 +54,8 @@ export default class OAuthView extends Vue {
 
         localStorage.setItem("accessToken", `${res.data.token}`);
 
-        window.opener.location.href = "/login";
+        window.opener.location.reload();
+        // window.opener.console.log("test");
         window.parent.close();
     }
 }
