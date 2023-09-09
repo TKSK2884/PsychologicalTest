@@ -52,9 +52,9 @@ export default class OAuthView extends Vue {
 
         console.log(res.data.token);
 
-        localStorage.setItem("accessToken", `${res.data.token}`); // Home으로 보내줌
+        localStorage.setItem("accessToken", `${res.data.token}`);
 
-        window.opener.location.href = "/";
+        window.opener.location.href = "/login";
         window.parent.close();
     }
 }

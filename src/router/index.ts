@@ -7,6 +7,7 @@ import JoinView from "../views/JoinView.vue";
 import TestView from "../views/TestView.vue";
 import TestResultHistoryView from "../views/TestResultHistoryView.vue";
 import PathFinderView from "../views/PathFinderView.vue";
+import SaveResultView from "../views/SaveResultView.vue";
 
 Vue.use(VueRouter);
 
@@ -43,8 +44,13 @@ const routes: Array<RouteConfig> = [
     },
     {
         path: "/path/finder",
-        name: "finder",
+        name: "path",
         component: PathFinderView,
+    },
+    {
+        path: "/test/save/result",
+        name: "save",
+        component: SaveResultView,
     },
 ];
 

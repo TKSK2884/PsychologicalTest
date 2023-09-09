@@ -100,7 +100,7 @@ export default class Result extends Vue {
 
     mounted() {
         if (this.result == undefined) {
-            router.push("/");
+            return router.push("/");
         }
     }
 }
@@ -215,6 +215,8 @@ export default class Result extends Vue {
 
                 .historyLink {
                     margin-top: 5px;
+                    margin-bottom: 20px;
+
                     a {
                         text-decoration: none;
 

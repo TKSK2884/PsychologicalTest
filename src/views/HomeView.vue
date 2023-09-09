@@ -173,44 +173,6 @@ export default class HomeView extends Vue {
         this.$forceUpdate();
     }
 
-    saveResult() {
-        api(
-            "test/result/save",
-            "post",
-            {
-                accessToken: this.accessToken,
-                saveResultToken: this.saveResultToken,
-            },
-            this
-        )
-            .catch(this.saveResultError)
-            .then(this.saveResultSuccess);
-    }
-
-    saveResultError(err: any) {
-        let errorCode = err.response.data.errorCode;
-
-        if (errorCode == 400) {
-            alert("잘못된 요청입니다.");
-            return;
-        }
-
-        if (errorCode == 500) {
-            alert("서버 오류");
-            return;
-        }
-
-        return;
-    }
-
-    saveResultSuccess(res: any) {
-        if (res == null) return;
-
-        sessionStorage.removeItem("saveResultToken");
-
-        alert("테스트 결과가 저장되었습니다.");
-    }
-
     get getTestArray(): testList[] {
         if (this.testListArray.length == 0) return [];
 
@@ -231,14 +193,12 @@ export default class HomeView extends Vue {
         if (accessToken != "") {
             localStorage.removeItem("accessToken");
             sessionStorage.setItem("accessToken", accessToken);
+
+            this.accessToken = accessToken;
         }
 
         if (this.accessToken != "") {
             this.getUserNickname();
-
-            if (this.saveResultToken != "") {
-                this.saveResult();
-            }
         }
         this.loadTestList();
     }

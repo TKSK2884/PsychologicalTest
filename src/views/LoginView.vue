@@ -49,7 +49,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { api } from "@/api/api";
-import router from "@/router";
 
 @Component({
     components: {},
@@ -63,15 +62,33 @@ export default class LoginView extends Vue {
 
     saveResultToken: string = (this.$route.query.saveResult as string) ?? "";
 
-    mounted() {
-        if (sessionStorage.getItem("accessToken") != undefined) {
-            alert("이미 로그인 되어있습니다.");
+    localAccessToken: string =
+        (localStorage.getItem("accessToken") as string) ?? "";
 
-            this.$router.push("/");
+    sessionAccessToken: string =
+        (sessionStorage.getItem("accessToken") as string) ?? "";
+
+    sessionSaveResultToken: string =
+        (sessionStorage.getItem("saveResultToken") as string) ?? "";
+
+    mounted() {
+        if (this.localAccessToken != "") {
+            sessionStorage.setItem("accessToken", this.localAccessToken);
         }
 
         if (this.saveResultToken != "") {
             sessionStorage.setItem("saveResultToken", this.saveResultToken);
+        }
+
+        if (this.localAccessToken != "") {
+            localStorage.removeItem("accessToken");
+            if (this.sessionSaveResultToken != "") {
+                return this.$router.push("/test/save/result");
+            }
+        }
+
+        if (this.sessionAccessToken != "") {
+            this.$router.push("/");
         }
     }
 
@@ -119,7 +136,11 @@ export default class LoginView extends Vue {
 
         sessionStorage.setItem("accessToken", accessToken);
 
-        this.$router.push("/");
+        if (this.saveResultToken != "") {
+            return this.$router.push("/test/save/result");
+        }
+
+        return this.$router.push("/");
     }
 
     goJoinPage() {
