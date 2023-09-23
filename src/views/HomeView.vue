@@ -78,6 +78,9 @@ import router from "@/router";
 export default class HomeView extends Vue {
     selectedTest: string = "";
     testListArray: testList[] = [];
+
+    nullAbleTestListArray: testList[] | null = null;
+
     loginNickname: string = "";
 
     isLogIn: boolean = false;
@@ -88,6 +91,18 @@ export default class HomeView extends Vue {
         sessionStorage.clear();
 
         router.go(0);
+    }
+
+    @Watch("nullAbleTestListArray")
+    onTestChangeArray() {
+        if (this.nullAbleTestListArray == null) {
+            this.$store.commit("setLoading", true);
+        } else {
+            this.$store.commit("setLoading", false);
+            this.testListArray = this.nullAbleTestListArray;
+        }
+
+        this.$forceUpdate();
     }
 
     getUserNickname() {
@@ -168,7 +183,7 @@ export default class HomeView extends Vue {
     loadSuccess(res: any) {
         if (res == null) return;
 
-        this.testListArray = res.data.testList;
+        this.nullAbleTestListArray = res.data.testList;
 
         this.$forceUpdate();
     }
@@ -332,6 +347,10 @@ export default class HomeView extends Vue {
                 font-size: 16px;
             }
         }
+    }
+
+    .loading {
+        @include loading;
     }
 }
 </style>

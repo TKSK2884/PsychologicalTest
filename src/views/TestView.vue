@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { api } from "@/api/api";
 import { JsonData } from "@/structure/types";
 import { Selection } from "@/structure/types";
@@ -73,18 +73,20 @@ import Result from "@/components/Result.vue";
     },
 })
 export default class TestView extends Vue {
-    progressToken: string =
-        this.$store.state.progressToken ??
-        localStorage.getItem("progressToken") ??
-        "";
     accessToken: string = sessionStorage.getItem("accessToken") ?? "";
     selectTest: string = (this.$route.query.selectTest ?? "") as string;
+    progressToken: string =
+        localStorage.getItem(`progressToken=${this.selectTest}`) ?? "";
     progress: string = "";
+    progressID: string = "";
+
+    selectedTest: string = "";
 
     result: string = "";
     pendingResult: boolean = false;
     resultComplete: boolean = false;
 
+    nullAbleTest: JsonData | null = null;
     test: JsonData = {
         settings: {
             question_type: 0,
@@ -94,6 +96,18 @@ export default class TestView extends Vue {
     };
 
     progressNumber: number = 0;
+
+    @Watch("nullAbleTest")
+    onTestChange() {
+        if (this.nullAbleTest == null) {
+            this.$store.commit("setIsLoading", true);
+        } else {
+            this.test = this.nullAbleTest;
+            this.$store.commit("setIsLoading", false);
+        }
+
+        this.$forceUpdate();
+    }
 
     get getProgressPercent(): string {
         if (this.test.questions?.length == 0) return "0%";
@@ -110,6 +124,7 @@ export default class TestView extends Vue {
             {
                 progressToken: this.progressToken,
                 selectTest: this.selectTest,
+                progressID: this.progressID,
             },
             this
         )
@@ -133,8 +148,9 @@ export default class TestView extends Vue {
     loadSuccess(res: any) {
         if (res == null) return;
 
-        let token = res.data.token as string;
-        this.test = res.data.test;
+        let token = res.data.token as string; //진행도 토큰
+
+        this.nullAbleTest = res.data.test as JsonData;
 
         let testName: string = res.data.test_name as string;
 
@@ -148,13 +164,17 @@ export default class TestView extends Vue {
 
         if (this.progress != "") {
             this.progressNumber = this.progress.length;
+
             if (this.progressNumber > this.test.questions?.length) {
                 this.progressNumber = this.test.questions?.length ?? 0;
             }
         }
 
-        this.$store.commit("setProgressToken", this.progressToken); // ??
-        localStorage.setItem("progressToken", `${this.progressToken}`); // ??
+        // this.$store.commit("setProgressToken", this.progressToken);
+        localStorage.setItem(
+            `progressToken=${this.selectTest}`,
+            `${this.progressToken}`
+        );
 
         this.$store.commit("setSelectedTestName", testName);
 
@@ -168,6 +188,7 @@ export default class TestView extends Vue {
             {
                 token: this.progressToken,
                 progress: selectNumber,
+                selectTest: this.selectTest,
             },
             this
         )
@@ -180,8 +201,8 @@ export default class TestView extends Vue {
             this.pendingResult = true;
             this.resultApi();
 
-            localStorage.removeItem("progressToken");
-            this.$store.commit("setProgressToken", undefined);
+            localStorage.removeItem(`progressToken=${this.selectTest}`); // 진행도 토큰 삭제
+            // this.$store.commit("setProgressToken", undefined);
             return;
         }
     }
@@ -193,6 +214,7 @@ export default class TestView extends Vue {
             {
                 progressToken: this.progressToken,
                 accessToken: this.accessToken,
+                selectTest: this.selectTest,
             },
             this
         )
@@ -245,6 +267,7 @@ export default class TestView extends Vue {
     }
 
     mounted() {
+        console.log(this.test);
         this.loadTest();
     }
 
@@ -356,48 +379,4 @@ export default class TestView extends Vue {
 }
 </style>
 
-<style lang="scss">
-@keyframes ldio-r0kv4ehu2ae {
-    0% {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
-.ldio-r0kv4ehu2ae div {
-    position: absolute;
-
-    width: 50px;
-    height: 50px;
-
-    border: 6px solid #666666;
-    border-top-color: transparent;
-    border-radius: 50%;
-}
-.ldio-r0kv4ehu2ae div {
-    animation: ldio-r0kv4ehu2ae 0.5434782608695652s linear infinite;
-    top: 100px;
-    left: 100px;
-}
-.loadingio-spinner-rolling-5ax215itman {
-    width: 200px;
-    height: 200px;
-
-    display: inline-block;
-    overflow: hidden;
-    background: none;
-}
-.ldio-r0kv4ehu2ae {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform: translateZ(0) scale(1);
-    backface-visibility: hidden;
-    transform-origin: 0 0; /* see note above */
-}
-.ldio-r0kv4ehu2ae div {
-    box-sizing: content-box;
-}
-/* generated by https://loading.io/ */
-</style>
+<style lang="scss"></style>

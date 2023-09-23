@@ -47,8 +47,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { api } from "@/api/api";
+import { watch } from "vue";
 
 @Component({
     components: {},
@@ -68,9 +69,6 @@ export default class LoginView extends Vue {
     sessionAccessToken: string =
         (sessionStorage.getItem("accessToken") as string) ?? "";
 
-    sessionSaveResultToken: string =
-        (sessionStorage.getItem("saveResultToken") as string) ?? "";
-
     mounted() {
         if (this.localAccessToken != "") {
             sessionStorage.setItem("accessToken", this.localAccessToken);
@@ -82,13 +80,13 @@ export default class LoginView extends Vue {
 
         if (this.localAccessToken != "") {
             localStorage.removeItem("accessToken");
-            if (this.sessionSaveResultToken != "") {
+            if ((sessionStorage.getItem("saveResultToken") ?? "") != "") {
                 return this.$router.push("/test/save/result");
             }
         }
 
-        if (this.sessionAccessToken != "") {
-            this.$router.push("/");
+        if ((sessionStorage.getItem("accessToken") ?? "") != "") {
+            return this.$router.push("/");
         }
     }
 
