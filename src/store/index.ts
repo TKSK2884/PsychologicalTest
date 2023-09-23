@@ -10,7 +10,7 @@ export default new Vuex.Store({
         userId: undefined,
         selectedTestName: undefined,
         url: undefined,
-        isLoading: false,
+        isLoading: true,
     },
     getters: {
         getProgressToken(state) {

@@ -29,7 +29,7 @@ import { watch } from "vue";
 })
 export default class AppView extends Vue {
     isHeaderEnable: boolean = true;
-    isloading: boolean = this.$store.state.isLoading ?? false;
+    isloading: boolean = true;
 
     @Watch("$store.state.isLoading")
     onLoadingChange() {

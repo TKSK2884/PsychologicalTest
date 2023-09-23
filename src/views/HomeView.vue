@@ -96,9 +96,9 @@ export default class HomeView extends Vue {
     @Watch("nullAbleTestListArray")
     onTestChangeArray() {
         if (this.nullAbleTestListArray == null) {
-            this.$store.commit("setLoading", true);
+            this.$store.commit("setIsLoading", true);
         } else {
-            this.$store.commit("setLoading", false);
+            this.$store.commit("setIsLoading", false);
             this.testListArray = this.nullAbleTestListArray;
         }
 
