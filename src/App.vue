@@ -5,7 +5,13 @@
                 <Header />
             </div>
             <router-view />
-            <div :class="$style.loading" v-if="isloading">
+            <div
+                :style="{
+                    opacity: opacity,
+                }"
+                :class="$style.loading"
+                v-if="isloading"
+            >
                 <div class="loadingio-spinner-rolling-5ax215itman">
                     <div class="ldio-r0kv4ehu2ae">
                         <div></div>
@@ -31,9 +37,15 @@ export default class AppView extends Vue {
     isHeaderEnable: boolean = true;
     isloading: boolean = true;
 
+    opacity: string = "1";
+
     @Watch("$store.state.isLoading")
     onLoadingChange() {
-        this.isloading = this.$store.state.isLoading;
+        this.opacity = this.$store.state.isLoading ? "1" : "0.5";
+
+        setTimeout(() => {
+            this.isloading = this.$store.state.isLoading;
+        }, 300);
     }
 
     @Watch("$route")

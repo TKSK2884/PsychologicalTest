@@ -86,23 +86,15 @@ export default class TestView extends Vue {
     pendingResult: boolean = false;
     resultComplete: boolean = false;
 
-    nullAbleTest: JsonData | null = null;
-    test: JsonData = {
-        settings: {
-            question_type: 0,
-            parameters: [],
-        },
-        questions: [],
-    };
+    test: JsonData | null = null;
 
     progressNumber: number = 0;
 
-    @Watch("nullAbleTest")
+    @Watch("test")
     onTestChange() {
-        if (this.nullAbleTest == null) {
+        if (this.test == null) {
             this.$store.commit("setIsLoading", true);
         } else {
-            this.test = this.nullAbleTest;
             this.$store.commit("setIsLoading", false);
         }
 
@@ -110,6 +102,8 @@ export default class TestView extends Vue {
     }
 
     get getProgressPercent(): string {
+        if (this.test == null) return "0%";
+
         if (this.test.questions?.length == 0) return "0%";
 
         return `${Math.floor(
@@ -150,7 +144,7 @@ export default class TestView extends Vue {
 
         let token = res.data.token as string; //진행도 토큰
 
-        this.nullAbleTest = res.data.test as JsonData;
+        this.test = res.data.test as JsonData;
 
         let testName: string = res.data.test_name as string;
 
@@ -165,12 +159,15 @@ export default class TestView extends Vue {
         if (this.progress != "") {
             this.progressNumber = this.progress.length;
 
-            if (this.progressNumber > this.test.questions?.length) {
+            if (this.test == null) {
+                return;
+            }
+
+            if (this.progressNumber > this.test.questions?.length ?? 0) {
                 this.progressNumber = this.test.questions?.length ?? 0;
             }
         }
 
-        // this.$store.commit("setProgressToken", this.progressToken);
         localStorage.setItem(
             `progressToken=${this.selectTest}`,
             `${this.progressToken}`
@@ -197,12 +194,14 @@ export default class TestView extends Vue {
     }
 
     updateSuccess(res: any) {
+        if (this.test == null) return;
+
         if (this.test.questions?.length == this.progressNumber) {
             this.pendingResult = true;
             this.resultApi();
 
             localStorage.removeItem(`progressToken=${this.selectTest}`); // 진행도 토큰 삭제
-            // this.$store.commit("setProgressToken", undefined);
+
             return;
         }
     }
@@ -232,8 +231,10 @@ export default class TestView extends Vue {
     }
 
     get getTestTitle(): string {
+        if (this.test == null) return "";
+
         if (Object.keys(this.test.questions).length == 0) {
-            return "";
+            return "테스트를 불러오는데 실패했습니다.";
         }
 
         let title: string =
@@ -247,6 +248,8 @@ export default class TestView extends Vue {
     }
 
     updateProgress(selectNumber: number) {
+        if (this.test == null) return;
+
         if (this.test.questions?.length == this.progressNumber) {
             return;
         }
@@ -257,6 +260,8 @@ export default class TestView extends Vue {
     }
 
     get getTestArray(): Selection[] {
+        if (this.test == null) return [];
+
         if (this.test.questions?.length == 0) return [];
 
         if (this.test.questions?.length == this.progressNumber) {
@@ -267,7 +272,6 @@ export default class TestView extends Vue {
     }
 
     mounted() {
-        console.log(this.test);
         this.loadTest();
     }
 

@@ -1,7 +1,9 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <div :class="$style.logo"></div>
+            <router-link :to="`/`">
+                <div :class="$style.logo"></div
+            ></router-link>
             <div :class="$style.title">GPTMind</div>
             <div :class="[$style.textBox, $style.copyright]">
                 Copyright(c) by 조현석 |
@@ -9,6 +11,18 @@
             </div>
             <div :class="$style.section">
                 <div :class="$style.frame">
+                    <div
+                        v-if="getTestArray != null && getTestArray.length == 0"
+                        :class="$style.message"
+                    >
+                        테스트를 불러오는데<br />
+                        실패했습니다.
+
+                        <br />
+                        <br />
+                        잠시 후 다시 시도해주세요.
+                    </div>
+
                     <div
                         :class="$style.box"
                         v-for="test in getTestArray"
@@ -77,13 +91,12 @@ import router from "@/router";
 })
 export default class HomeView extends Vue {
     selectedTest: string = "";
-    testListArray: testList[] = [];
-
-    nullAbleTestListArray: testList[] | null = null;
+    testListArray: testList[] | null = null;
 
     loginNickname: string = "";
 
     isLogIn: boolean = false;
+
     accessToken: string = sessionStorage.getItem("accessToken") ?? "";
     saveResultToken: string = sessionStorage.getItem("saveResultToken") ?? "";
 
@@ -93,13 +106,12 @@ export default class HomeView extends Vue {
         router.go(0);
     }
 
-    @Watch("nullAbleTestListArray")
+    @Watch("testListArray")
     onTestChangeArray() {
-        if (this.nullAbleTestListArray == null) {
+        if (this.testListArray == null) {
             this.$store.commit("setIsLoading", true);
         } else {
             this.$store.commit("setIsLoading", false);
-            this.testListArray = this.nullAbleTestListArray;
         }
 
         this.$forceUpdate();
@@ -183,12 +195,14 @@ export default class HomeView extends Vue {
     loadSuccess(res: any) {
         if (res == null) return;
 
-        this.nullAbleTestListArray = res.data.testList;
+        this.testListArray = res.data.testList;
 
         this.$forceUpdate();
     }
 
-    get getTestArray(): testList[] {
+    get getTestArray(): null | testList[] {
+        if (this.testListArray == null) return null;
+
         if (this.testListArray.length == 0) return [];
 
         return this.testListArray;
@@ -304,6 +318,12 @@ export default class HomeView extends Vue {
                 flex-direction: column-reverse;
 
                 margin-top: 70px;
+
+                .message {
+                    font-size: 24px;
+
+                    text-align: center;
+                }
 
                 .box {
                     @include setCenter;
