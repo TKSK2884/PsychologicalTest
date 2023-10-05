@@ -131,6 +131,7 @@ export default class TestView extends Vue {
         let errorCode = err.response.data.errorCode;
 
         let alertErrorMessage: string = errorMessage(errorCode);
+        console.log("에러 발생");
 
         alert(alertErrorMessage);
 

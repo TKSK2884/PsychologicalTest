@@ -138,15 +138,9 @@ export default class HomeView extends Vue {
     getUserNicknameError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        if (errorCode == 400) {
-            alert("잘못된 요청입니다.");
-            return;
-        }
+        let alertErrorMessage: string = errorMessage(errorCode);
 
-        if (errorCode == 500) {
-            alert("서버 오류");
-            return;
-        }
+        alert(alertErrorMessage);
 
         return;
     }
