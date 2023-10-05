@@ -220,7 +220,7 @@ export default class TestView extends Vue {
     }
 
     resultSuccess(res: any) {
-        this.result = (res.data.result as string) ?? "";
+        this.result = (res.data?.result as string) ?? "";
 
         this.pendingResult = false;
         this.resultComplete = true;
