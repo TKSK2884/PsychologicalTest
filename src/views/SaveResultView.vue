@@ -7,6 +7,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { api } from "@/api/api";
+import { errorMessage } from "@/utils/errorMessage";
 
 @Component({
     components: {},
@@ -32,15 +33,9 @@ export default class SaveResultView extends Vue {
     saveResultError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        if (errorCode == 400) {
-            alert("잘못된 요청입니다.");
-            return;
-        }
+        let alertErrorMessage = errorMessage(errorCode);
 
-        if (errorCode == 500) {
-            alert("서버 오류");
-            return;
-        }
+        alert(alertErrorMessage);
 
         return;
     }
@@ -50,7 +45,6 @@ export default class SaveResultView extends Vue {
 
         sessionStorage.removeItem("saveResultToken");
 
-        console.log("테스트 결과가 저장되었습니다.");
         return this.$router.push("/");
     }
     mounted() {

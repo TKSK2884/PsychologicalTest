@@ -10,6 +10,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { api } from "@/api/api";
 import { getUnwrappedQuery } from "@/utils/strings";
+import { errorMessage } from "@/utils/errorMessage";
 
 @Component({
     components: {},
@@ -38,12 +39,10 @@ export default class OAuthView extends Vue {
     tokenError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        if (errorCode == 500) {
-            alert("서버 오류");
-            return;
-        }
+        let alertErrorMessage = errorMessage(errorCode);
 
-        alert("로그인에 실패하였습니다.");
+        alert(alertErrorMessage);
+
         return;
     }
 

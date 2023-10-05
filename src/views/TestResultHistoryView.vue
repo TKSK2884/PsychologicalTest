@@ -53,6 +53,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { api } from "@/api/api";
 import { ResultObject } from "@/structure/types";
 import Result from "@/components/Result.vue";
+import { errorMessage } from "@/utils/errorMessage";
 
 @Component({
     components: {
@@ -84,10 +85,9 @@ export default class TestResultHistoryView extends Vue {
     loadError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        if (errorCode == 500) {
-            alert("서버 에러");
-            return;
-        }
+        let alertErrorMessage = errorMessage(errorCode);
+
+        alert(alertErrorMessage);
 
         return;
     }
@@ -95,7 +95,7 @@ export default class TestResultHistoryView extends Vue {
     loadSuccess(res: any) {
         if (res == null) return;
 
-        this.resultArray = res.data.result; //5개로 제한해야함
+        this.resultArray = res.data.result;
 
         this.$forceUpdate();
     }

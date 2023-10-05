@@ -66,6 +66,7 @@ import { api } from "@/api/api";
 import { JsonData } from "@/structure/types";
 import { Selection } from "@/structure/types";
 import Result from "@/components/Result.vue";
+import { errorMessage } from "@/utils/errorMessage";
 
 @Component({
     components: {
@@ -129,12 +130,9 @@ export default class TestView extends Vue {
     loadError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        alert(errorCode);
+        let alertErrorMessage: string = errorMessage(errorCode);
 
-        if (errorCode == 500) {
-            alert("서버 오류");
-            return;
-        }
+        alert(alertErrorMessage);
 
         return;
     }

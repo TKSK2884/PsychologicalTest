@@ -85,6 +85,7 @@ import { RouterLink } from "vue-router";
 import { api } from "@/api/api";
 import { testList } from "@/structure/types";
 import router from "@/router";
+import { errorMessage } from "@/utils/errorMessage";
 
 @Component({
     components: {},
@@ -177,17 +178,9 @@ export default class HomeView extends Vue {
     loadError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        alert(errorCode);
+        let alertErrorMessage: string = errorMessage(errorCode);
 
-        if (errorCode == 400) {
-            alert("잘못된 요청입니다.");
-            return;
-        }
-
-        if (errorCode == 500) {
-            alert("서버 오류");
-            return;
-        }
+        alert(alertErrorMessage);
 
         return;
     }

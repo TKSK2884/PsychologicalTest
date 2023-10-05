@@ -50,6 +50,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { api } from "@/api/api";
 import { watch } from "vue";
+import { errorMessage } from "@/utils/errorMessage";
 
 @Component({
     components: {},
@@ -113,17 +114,10 @@ export default class LoginView extends Vue {
     loginError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        if (errorCode == 500) {
-            alert("서버 에러");
-            return;
-        }
+        let alertErrorMessage = errorMessage(errorCode);
 
-        if (errorCode == 101) {
-            alert("아이디 혹은 비밀번호를 확인 해주세요");
-            return;
-        }
+        alert(alertErrorMessage);
 
-        alert("알 수 없는 에러 다시 시도해주세요");
         return;
     }
 

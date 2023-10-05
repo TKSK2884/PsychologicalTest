@@ -57,6 +57,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { api } from "@/api/api";
+import { errorMessage } from "@/utils/errorMessage";
 
 @Component({
     components: {},
@@ -107,26 +108,14 @@ export default class JoinView extends Vue {
     joinError(err: any) {
         let errorCode = err.response.data.errorCode;
 
-        if (errorCode == 500) {
-            alert("서버 오류");
-            return;
-        }
+        let alertErrorMessage = errorMessage(errorCode);
 
-        if (errorCode == 202) {
-            alert("중복되는 아이디 입니다.");
-            return;
-        }
-
-        if (errorCode == 204) {
-            alert("중복되는 닉네임 입니다.");
-            return;
-        }
-        alert("가입에 실패했습니다");
+        alert(alertErrorMessage);
     }
 
     joinSuccess(res: any) {
         if (res == null) {
-            alert("가입에 실패했습니다");
+            alert("회원가입에 실패했습니다. 다시 시도해주세요");
             return;
         }
         this.$router.push("/login");
