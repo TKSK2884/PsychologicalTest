@@ -331,6 +331,12 @@ export default class HomeView extends Vue {
                         text-align: center;
 
                         @include setCenter;
+
+                        &:hover {
+                            cursor: pointer;
+
+                            background-color: #f2f2f2;
+                        }
                     }
                 }
             }
