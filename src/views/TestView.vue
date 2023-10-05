@@ -131,7 +131,6 @@ export default class TestView extends Vue {
         let errorCode = err.response.data.errorCode;
 
         let alertErrorMessage: string = errorMessage(errorCode);
-        console.log("에러 발생");
 
         alert(alertErrorMessage);
 
@@ -221,7 +220,7 @@ export default class TestView extends Vue {
     }
 
     resultSuccess(res: any) {
-        this.result = res.data.result ?? "";
+        this.result = (res.data.result as string) ?? "";
 
         this.pendingResult = false;
         this.resultComplete = true;
