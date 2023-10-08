@@ -57,8 +57,15 @@ export default class AppView extends Vue {
         }
     }
 
+    @Watch("$store.state.pageTitle")
+    onTitleChange() {
+        document.title = this.$store.state.pageTitle;
+    }
+
     mounted() {
         this.onRouteChange();
+
+        document.title = this.$store.state.pageTitle;
     }
 }
 </script>

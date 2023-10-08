@@ -11,6 +11,7 @@ export default new Vuex.Store({
         selectedTestName: undefined,
         url: undefined,
         isLoading: true,
+        pageTitle: "GptMind",
     },
     getters: {
         getProgressToken(state) {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
         },
         setIsLoading(state, isLoading) {
             state.isLoading = isLoading;
+        },
+        setPageTitle(state, newTitle) {
+            state.pageTitle = newTitle;
         },
     },
     actions: {},
