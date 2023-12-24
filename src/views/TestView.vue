@@ -340,15 +340,27 @@ export default class TestView extends Vue {
                 text-align: center;
 
                 @include setCenter;
+                @include mobile {
+                    max-width: 320px;
+
+                    font-size: 20px;
+                }
             }
 
             .selectBox {
+                padding-inline: 20px;
                 .box {
-                    width: 400px;
+                    max-width: 400px;
 
-                    @include setCenter;
+                    margin-inline: auto;
+
+                    @include mobile {
+                        max-width: 320px;
+                    }
 
                     .select {
+                        font-size: 16px;
+
                         margin-top: 10px;
 
                         padding: 20px 24px;
@@ -358,6 +370,10 @@ export default class TestView extends Vue {
                         border-radius: 5px;
 
                         box-shadow: 0px 0px 1px #727272;
+
+                        @include mobile {
+                            font-size: 13px;
+                        }
 
                         &:hover {
                             cursor: pointer;
@@ -371,6 +387,7 @@ export default class TestView extends Vue {
                     margin-top: 10px;
 
                     text-align: center;
+                    
                     .pendigText {
                         padding: 10px 24px;
 

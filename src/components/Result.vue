@@ -138,9 +138,14 @@ export default class Result extends Vue {
     }
 
     .container {
-        width: 800px;
+        max-width: 800px;
+
+        word-break: keep-all;
 
         @include setCenter;
+        @include mobile {
+            max-width: 320px;
+        }
         .section {
             margin-top: 80px;
 
@@ -157,6 +162,9 @@ export default class Result extends Vue {
                 text-align: center;
 
                 @include setCenter;
+                @include mobile {
+                    max-width: 320px;
+                }
             }
 
             .result {
@@ -176,6 +184,7 @@ export default class Result extends Vue {
                 a {
                     text-decoration: none;
                 }
+
                 .button {
                     max-width: 180px;
 
@@ -190,6 +199,12 @@ export default class Result extends Vue {
                     text-align: center;
 
                     color: #000000;
+
+                    @include mobile {
+                        // max-width: 120px;
+
+                        padding: 16px 40px;
+                    }
 
                     &:hover {
                         cursor: pointer;

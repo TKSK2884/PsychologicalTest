@@ -306,10 +306,18 @@ export default class HomeView extends Vue {
 
                 margin-top: 70px;
 
+                @include mobile {
+                    margin-top: 35px;
+                }
+
                 .message {
                     font-size: 24px;
 
                     text-align: center;
+
+                    @include mobile {
+                        font-size: 18px
+                    }
                 }
 
                 .box {
@@ -318,17 +326,15 @@ export default class HomeView extends Vue {
                     .testLink {
                         width: 300px;
 
-                        margin-top: 16px;
+                        font-size: 24px;
+                        text-align: center;
 
                         padding: 16px 20px;
+                        margin-top: 16px;
 
                         border-radius: 5px;
 
                         box-shadow: 0px 0px 1px #727272;
-
-                        font-size: 24px;
-
-                        text-align: center;
 
                         @include setCenter;
 

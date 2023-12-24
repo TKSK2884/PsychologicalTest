@@ -5,7 +5,7 @@
                 <div :class="[$style.section]">
                     <router-link :to="`/`">
                         <div :class="$style.box">
-                            <div :class="$style.logo"></div>
+                            <div :class="$style.logo" />
                             <div :class="$style.link">GPTMind</div>
                         </div>
                     </router-link>
@@ -78,18 +78,29 @@ export default class Header extends Vue {
                 }
 
                 .link {
-                    padding: 0px 24px;
-
                     font-size: 32px;
 
+                    padding: 0px 24px;
+
                     color: #000000;
+
+                    @include mobile {
+                        font-size: 28px;
+                    }
                 }
             }
+            
             .selectTest {
                 margin-left: 18px;
                 padding: 6px;
 
                 font-size: 26px;
+
+                @include mobile {
+                    font-size: 18px;
+
+                    margin-left: 6px;
+                }
             }
         }
     }
