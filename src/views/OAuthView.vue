@@ -49,8 +49,6 @@ export default class OAuthView extends Vue {
     tokenSuccess(res: any) {
         if (res == null) return;
 
-        console.log(res.data.token);
-
         localStorage.setItem("accessToken", `${res.data.token}`);
 
         window.opener.location.reload();
