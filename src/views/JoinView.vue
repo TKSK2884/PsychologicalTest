@@ -69,37 +69,8 @@ export default class JoinView extends Vue {
 
     inputNickname: string = "";
 
-    localAccessToken: string =
-        (localStorage.getItem("accessToken") as string) ?? "";
-
-    sessionAccessToken: string =
-        (sessionStorage.getItem("accessToken") as string) ?? "";
-
-    saveResultToken: string = (this.$route.query.saveResult as string) ?? "";
-
     accessKey = process.env.VUE_APP_KAKAO_ACCESS_KEY;
     redirectURI = process.env.VUE_APP_KAKAO_REDIRECT_URI;
-
-    mounted() {
-        if (this.localAccessToken != "") {
-            sessionStorage.setItem("accessToken", this.localAccessToken);
-        }
-
-        if (this.saveResultToken != "") {
-            sessionStorage.setItem("saveResultToken", this.saveResultToken);
-        }
-
-        if (this.localAccessToken != "") {
-            localStorage.removeItem("accessToken");
-            if ((sessionStorage.getItem("saveResultToken") ?? "") != "") {
-                return this.$router.push("/test/save/result");
-            }
-        }
-
-        if ((sessionStorage.getItem("accessToken") ?? "") != "") {
-            return this.$router.push("/");
-        }
-    }
 
     createAccount() {
         if (this.inputID == "") {
@@ -154,6 +125,7 @@ export default class JoinView extends Vue {
     loginWithKakao() {
         const url: string = `https://kauth.kakao.com/oauth/authorize?client_id=${this.accessKey}&redirect_uri=${this.redirectURI}&response_type=code`;
 
+        console.log(url);
         window.open(url, "", "width=600,height=600");
     }
 }

@@ -43,9 +43,12 @@ $button-width: 240px;
 }
 
 // login & join kakaoButton
+$kakao-button-width: 180px;
+$kakao-button-height: 40px;
+
 @mixin kakaoButton {
-    width: 180px;
-    height: 40px;
+    width: $kakao-button-width;
+    height: $kakao-button-height;
 
     background-image: url("@/assets/kakao_login_medium.png");
     background-size: cover;
@@ -73,3 +76,4 @@ $button-width: 240px;
     justify-content: center;
     align-items: center;
 }
+

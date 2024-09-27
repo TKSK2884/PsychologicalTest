@@ -23,8 +23,6 @@
                         잠시 후 다시 시도해주세요.
                     </div>
 
-                    <LoadingIndicator v-if="isLoading" />
-
                     <div
                         :class="$style.box"
                         v-for="test in getTestArray"
@@ -88,18 +86,13 @@ import { api } from "@/api/api";
 import { testList } from "@/structure/types";
 import router from "@/router";
 import { errorMessage } from "@/utils/errorMessage";
-import LoadingIndicator from "@/components/LoadingIndicator.vue";
 
 @Component({
-    components: {
-        LoadingIndicator,
-    },
+    components: {},
 })
 export default class HomeView extends Vue {
     selectedTest: string = "";
     testListArray: testList[] | null = null;
-
-    isLoading: boolean = true;
 
     loginNickname: string = "";
 
@@ -114,16 +107,16 @@ export default class HomeView extends Vue {
         router.go(0);
     }
 
-    // @Watch("testListArray")
-    // onTestChangeArray() {
-    //     if (this.testListArray == null) {
-    //         this.isLoading = true;
-    //     } else {
-    //         this.isLoading = true;
-    //     }
+    @Watch("testListArray")
+    onTestChangeArray() {
+        if (this.testListArray == null) {
+            this.$store.commit("setIsLoading", true);
+        } else {
+            this.$store.commit("setIsLoading", false);
+        }
 
-    //     this.$forceUpdate();
-    // }
+        this.$forceUpdate();
+    }
 
     getUserNickname() {
         if (this.accessToken == "") {
@@ -143,11 +136,6 @@ export default class HomeView extends Vue {
     }
 
     getUserNicknameError(err: any) {
-        if (!err) {
-            console.log(err);
-            return;
-        }
-
         let errorCode = err.response.data.errorCode;
 
         let alertErrorMessage: string = errorMessage(errorCode);
@@ -169,8 +157,6 @@ export default class HomeView extends Vue {
     }
 
     loadTestList() {
-        this.isLoading = true;
-
         api(
             "test/list",
             "get",
@@ -180,10 +166,7 @@ export default class HomeView extends Vue {
             this
         )
             .catch(this.loadError)
-            .then(this.loadSuccess)
-            .finally(() => {
-                this.isLoading = false;
-            });
+            .then(this.loadSuccess);
     }
 
     loadError(err: any) {
@@ -221,8 +204,6 @@ export default class HomeView extends Vue {
     }
 
     mounted() {
-        // return;
-
         let accessToken: string = localStorage.getItem("accessToken") ?? "";
 
         if (accessToken != "") {
@@ -335,7 +316,7 @@ export default class HomeView extends Vue {
                     text-align: center;
 
                     @include mobile {
-                        font-size: 18px;
+                        font-size: 18px
                     }
                 }
 

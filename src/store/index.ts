@@ -10,6 +10,7 @@ export default new Vuex.Store({
         userId: undefined,
         selectedTestName: undefined,
         url: undefined,
+        isLoading: true,
         pageTitle: "GptMind",
     },
     getters: {
@@ -35,6 +36,9 @@ export default new Vuex.Store({
         },
         setUrl(state, url) {
             state.url = url;
+        },
+        setIsLoading(state, isLoading) {
+            state.isLoading = isLoading;
         },
         setPageTitle(state, newTitle) {
             state.pageTitle = newTitle;
