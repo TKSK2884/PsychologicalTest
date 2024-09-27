@@ -25,8 +25,8 @@ interface SelectionParams {
 }
 
 export interface ResultObject {
-    select_test_id: number;
-    select_test: string;
+    select_test: number;
+    select_test_name: string;
     content: string;
     time_date: Date;
 }

@@ -23,7 +23,6 @@ export default class OAuthView extends Vue {
     tokenWithKakao(code: string) {
         if (code == "") return;
 
-        console.log(code);
         api(
             "kakao/token",
             "post",
@@ -48,8 +47,6 @@ export default class OAuthView extends Vue {
 
     tokenSuccess(res: any) {
         if (res == null) return;
-
-        console.log(res.data.token);
 
         localStorage.setItem("accessToken", `${res.data.token}`);
 

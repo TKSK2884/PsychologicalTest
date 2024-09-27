@@ -387,7 +387,7 @@ export default class TestView extends Vue {
                     margin-top: 10px;
 
                     text-align: center;
-                    
+
                     .pendigText {
                         padding: 10px 24px;
 

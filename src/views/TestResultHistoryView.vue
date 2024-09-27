@@ -103,12 +103,12 @@ export default class TestResultHistoryView extends Vue {
     getResult(content: ResultObject) {
         this.isSelectedResult = true;
         this.result = content.content;
-        this.selectTestID = content.select_test_id;
+        this.selectTestID = content.select_test;
         return;
     }
 
     getSelectTest(content: ResultObject): string {
-        return content.select_test ?? "";
+        return content.select_test_name ?? "";
     }
 
     getContent(content: ResultObject): string {
@@ -128,7 +128,7 @@ export default class TestResultHistoryView extends Vue {
     }
 
     getSelectTestID(content: ResultObject): number {
-        return content.select_test_id ?? 0;
+        return content.select_test ?? 0;
     }
 
     mounted() {
