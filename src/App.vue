@@ -96,11 +96,14 @@ body {
     top: 100px;
     left: 100px;
 }
+
 .loadingio-spinner-rolling-5ax215itman {
     width: 200px;
     height: 200px;
 
-    display: inline-block;
+    margin-inline: auto;
+
+    display: block;
     overflow: hidden;
     background: none;
 }
