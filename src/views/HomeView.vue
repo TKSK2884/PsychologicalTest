@@ -386,9 +386,5 @@ export default class HomeView extends Vue {
             }
         }
     }
-
-    .loading {
-        @include loading;
-    }
 }
 </style>
