@@ -41,10 +41,8 @@
                         <div :class="$style.pendigText">
                             답변을 생성하는 중...
                         </div>
-                        <div class="loadingio-spinner-rolling-5ax215itman">
-                            <div class="ldio-r0kv4ehu2ae">
-                                <div></div>
-                            </div>
+                        <div>
+                            <LoadingIndicator />
                         </div>
                     </div>
                 </div>
@@ -67,10 +65,12 @@ import { JsonData } from "@/structure/types";
 import { Selection } from "@/structure/types";
 import Result from "@/components/Result.vue";
 import { errorMessage } from "@/utils/errorMessage";
+import LoadingIndicator from "@/components/LoadingIndicator.vue";
 
 @Component({
     components: {
         Result,
+        LoadingIndicator,
     },
 })
 export default class TestView extends Vue {
@@ -90,17 +90,6 @@ export default class TestView extends Vue {
     test: JsonData | null = null;
 
     progressNumber: number = 0;
-
-    @Watch("test")
-    onTestChange() {
-        if (this.test == null) {
-            this.$store.commit("setIsLoading", true);
-        } else {
-            this.$store.commit("setIsLoading", false);
-        }
-
-        this.$forceUpdate();
-    }
 
     get getProgressPercent(): string {
         if (this.test == null) return "0%";
@@ -387,7 +376,7 @@ export default class TestView extends Vue {
                     margin-top: 10px;
 
                     text-align: center;
-                    
+
                     .pendigText {
                         padding: 10px 24px;
 
