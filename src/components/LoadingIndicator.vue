@@ -1,10 +1,8 @@
 <template>
     <div :class="$style.index">
-        <div :class="$style.loading">
-            <div class="loadingio-spinner-rolling-5ax215itman">
-                <div class="ldio-r0kv4ehu2ae">
-                    <div />
-                </div>
+        <div class="loadingio-spinner-rolling-5ax215itman">
+            <div class="ldio-r0kv4ehu2ae">
+                <div />
             </div>
         </div>
     </div>
@@ -22,9 +20,5 @@ export default class LoadingIndicater extends Vue {}
 .index {
     width: 100%;
     height: 100%;
-
-    > .loading {
-        @include loading;
-    }
 }
 </style>
