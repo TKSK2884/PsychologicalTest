@@ -210,7 +210,6 @@ export default class LoginView extends Vue {
                     .orBar {
                         position: absolute;
 
-                        z-index: -1;
                         width: 100%;
 
                         top: 50%;
@@ -225,6 +224,8 @@ export default class LoginView extends Vue {
 
                         background-color: #ffffff;
                         color: #999999;
+
+                        position: relative;
 
                         @include setCenter;
                     }
