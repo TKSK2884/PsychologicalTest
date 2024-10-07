@@ -9,7 +9,6 @@
                     </div>
                     <div :class="$style.info">
                         1초만에 카카오 로그인 해 보세요
-                        {{ $route.params.result }}
                     </div>
                 </div>
                 <div :class="$style.box">
@@ -49,7 +48,6 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { api } from "@/api/api";
-import { watch } from "vue";
 import { errorMessage } from "@/utils/errorMessage";
 
 @Component({
