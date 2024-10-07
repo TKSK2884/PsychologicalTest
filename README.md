@@ -1,30 +1,50 @@
-## GPTMind
-심리테스트 웹 어플리케이션
+# 심리테스트 (psyTest)
+**심리테스트**는 사용자가 테스트를 진행한 후, 그 결과를 사전에 저장된것이 아닌 실시간으로 Open AI API에 전달하여 생성된 답변을 제공하는 서비스입니다.
 
-이 프로젝트는 Open AI API를 활용하여 심리테스트 결과를 제공하기 위하여 만들어졌습니다.
+## 📄 프로젝트 설명
+- 사용자가 심리테스트를 진행하고 미리 저장된 값이 아닌 실시간으로 AI의 답변을 받을 수 있습니다.
+- 결과값은 저장되고 저장된 결과값을 확인 할 수 있습니다. 또한 테스트 완료 화면에서 로그인 진행후에도 결과를 저장 할 수 있습니다.
+## 🚀 프로젝트 데모
+- [심리테스트 데모 페이지](https://mind.highground.kr/)
 
-## Project Demo
-- [라이브 데모] https://mind.highground.kr/
+<img src="https://github.com/user-attachments/assets/88f4beca-8f83-4a71-9c89-b93c3c0921be" width="800px" height="480px">
 
+## 🔧 사용 기술 스택
+Vue 2.0, TypeScript, SCSS
 
-## Project setup
+## 📌 주요 기능
+- **심리테스트**: 자신의 심리적 성향 분석을 테스트를 진행하여 답변 받을 수 있습니다.
+- **MBTI테스트**: 자신의 MBTI를 유추해주는 테스트를 진행하여 답변 받을 수 있습니다.
+- **회원가입 및 로그인 기능**
+- **카카오 로그인**: 카카오 로그인을 지원합니다.
+- **결과값 확인**: 진행한 테스트 결과를 마이 페이지에서 확인이 가능합니다.
+- **이탈시 중도저장**: 진행중이던 테스트를 이탈하여도 중간까지의 과정이 저장되어 이어서 테스트를 진행할 수 있습니다.
+- **결과값 저장**: 진행한 테스트는 저장되며, 비 로그인상태에서 진행한 테스트도 로그인시 저장되도록 하였습니다.
 
+## 설치 및 실행
+
+### 사전 요구 사항
+- **Node.js** (v14 이상)
+- **npm** 또는 **yarn**
+
+### 설치
+
+1. 저장소를 클론합니다.
 ```
+git clone https://github.com/TKSK2884/psyTest-front.git
+```
+
+2. 의존성을 설치합니다.
+```
+npm install
+# 또는
 yarn install
 ```
 
-### Compiles and hot-reloads for development
-
+3. 개발 서버를 실행합니다.
 ```
-yarn serve
+npm run serve
+# 또는
+yarn run serve
 ```
-
-### Compiles and minifies for production
-
-```
-yarn build
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+4. 브라우저에서 http://localhost:8080으로 접속하여 확인 할 수 있습니다.
