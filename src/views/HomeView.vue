@@ -12,7 +12,11 @@
             <div :class="$style.section">
                 <div :class="$style.frame">
                     <div
-                        v-if="getTestArray != null && getTestArray.length == 0"
+                        v-if="
+                            getTestArray != null &&
+                            getTestArray.length == 0 &&
+                            !isLoading
+                        "
                         :class="$style.message"
                     >
                         테스트를 불러오는데<br />
