@@ -2,8 +2,8 @@
     <div :class="$style.index">
         <div :class="$style.container">
             <router-link :to="`/`">
-                <div :class="$style.logo"></div
-            ></router-link>
+                <div :class="$style.logo" />
+            </router-link>
             <div :class="$style.title">GPTMind</div>
             <div :class="[$style.textBox, $style.copyright]">
                 Copyright(c) by 조현석 |
@@ -28,11 +28,10 @@
                     </div>
 
                     <LoadingIndicator v-if="isLoading" />
-
                     <div
-                        :class="$style.box"
                         v-for="test in getTestArray"
                         :key="test.id"
+                        :class="$style.box"
                     >
                         <router-link
                             :to="`/test?selectTest=${getTestId(test)}`"
@@ -72,7 +71,7 @@
                 </div>
             </div>
 
-            <div :class="$style.linkBox" v-else>
+            <div v-else :class="$style.linkBox">
                 <router-link :to="`/login`">
                     <div :class="$style.link">로그인</div>
                 </router-link>
@@ -86,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { RouterLink } from "vue-router";
 import { api } from "@/api/api";
 import { testList } from "@/structure/types";
@@ -103,7 +102,7 @@ export default class HomeView extends Vue {
     selectedTest: string = "";
     testListArray: testList[] | null = null;
 
-    isLoading: boolean = true;
+    isLoading: boolean = false;
 
     loginNickname: string = "";
 
@@ -112,22 +111,27 @@ export default class HomeView extends Vue {
     accessToken: string = sessionStorage.getItem("accessToken") ?? "";
     saveResultToken: string = sessionStorage.getItem("saveResultToken") ?? "";
 
+    mounted() {
+        let accessToken: string = localStorage.getItem("accessToken") ?? "";
+
+        if (accessToken != "") {
+            localStorage.removeItem("accessToken");
+            sessionStorage.setItem("accessToken", accessToken);
+
+            this.accessToken = accessToken;
+        }
+
+        if (this.accessToken != "") {
+            this.getUserNickname();
+        }
+        this.loadTestList();
+    }
+
     logout() {
         sessionStorage.clear();
 
         router.go(0);
     }
-
-    // @Watch("testListArray")
-    // onTestChangeArray() {
-    //     if (this.testListArray == null) {
-    //         this.isLoading = true;
-    //     } else {
-    //         this.isLoading = true;
-    //     }
-
-    //     this.$forceUpdate();
-    // }
 
     getUserNickname() {
         if (this.accessToken == "") {
@@ -222,24 +226,6 @@ export default class HomeView extends Vue {
 
     getTestName(item: testList): string {
         return item.test_name ?? "";
-    }
-
-    mounted() {
-        // return;
-
-        let accessToken: string = localStorage.getItem("accessToken") ?? "";
-
-        if (accessToken != "") {
-            localStorage.removeItem("accessToken");
-            sessionStorage.setItem("accessToken", accessToken);
-
-            this.accessToken = accessToken;
-        }
-
-        if (this.accessToken != "") {
-            this.getUserNickname();
-        }
-        this.loadTestList();
     }
 }
 </script>
