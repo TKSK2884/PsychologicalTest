@@ -1,7 +1,7 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <div :class="$style.headerSection" v-if="isHeaderEnable">
+            <div v-if="isHeaderEnable" :class="$style.header">
                 <Header />
             </div>
             <router-view />
@@ -52,11 +52,11 @@ export default class AppView extends Vue {
     width: 100%;
     height: auto;
 
-    .container {
+    > .container {
         width: 100%;
         height: auto;
 
-        .headerSection {
+        > .header {
             width: 100%;
             height: auto;
         }
