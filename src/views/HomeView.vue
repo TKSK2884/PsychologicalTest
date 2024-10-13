@@ -111,22 +111,6 @@ export default class HomeView extends Vue {
     accessToken: string = sessionStorage.getItem("accessToken") ?? "";
     saveResultToken: string = sessionStorage.getItem("saveResultToken") ?? "";
 
-    mounted() {
-        let accessToken: string = localStorage.getItem("accessToken") ?? "";
-
-        if (accessToken != "") {
-            localStorage.removeItem("accessToken");
-            sessionStorage.setItem("accessToken", accessToken);
-
-            this.accessToken = accessToken;
-        }
-
-        if (this.accessToken != "") {
-            this.getUserNickname();
-        }
-        this.loadTestList();
-    }
-
     logout() {
         sessionStorage.clear();
 
@@ -210,6 +194,22 @@ export default class HomeView extends Vue {
         this.testListArray = res.data.testList;
 
         this.$forceUpdate();
+    }
+
+    mounted() {
+        let accessToken: string = localStorage.getItem("accessToken") ?? "";
+
+        if (accessToken != "") {
+            localStorage.removeItem("accessToken");
+            sessionStorage.setItem("accessToken", accessToken);
+
+            this.accessToken = accessToken;
+        }
+
+        if (this.accessToken != "") {
+            this.getUserNickname();
+        }
+        this.loadTestList();
     }
 
     get getTestArray(): null | testList[] {
