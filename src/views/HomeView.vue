@@ -63,10 +63,7 @@
                 </router-link>
                 <div :class="$style.bar">|</div>
 
-                <div
-                    v-on:click="logout()"
-                    :class="[$style.link, $style.logout]"
-                >
+                <div @click="logout()" :class="[$style.link, $style.logout]">
                     로그아웃
                 </div>
             </div>

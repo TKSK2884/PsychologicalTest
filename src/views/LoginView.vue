@@ -12,31 +12,29 @@
                     </div>
                 </div>
                 <div :class="$style.box">
-                    <div :class="$style.textLabel">ID</div>
+                    <div :class="$style.label">ID</div>
                     <input
                         v-model="inputID"
                         :class="$style.input"
                         type="text"
                     />
-                    <div :class="$style.textLabel">Password</div>
+                    <div :class="$style.label">Password</div>
                     <input
                         v-model="inputPassword"
                         :class="$style.input"
                         type="password"
                     />
-                    <div v-on:click="tryLogin()" :class="$style.button">
-                        로그인
-                    </div>
+                    <div @click="tryLogin()" :class="$style.button">로그인</div>
 
-                    <div :class="$style.orBox">
-                        <div :class="$style.orBar"></div>
-                        <div :class="$style.orText">또는</div>
+                    <div :class="$style.or">
+                        <div :class="$style.bar"></div>
+                        <div :class="$style.text">또는</div>
                     </div>
-                    <div v-on:click="goJoinPage()" :class="$style.joinBox">
-                        <div :class="$style.join">회원가입</div>
+                    <div @click="goJoinPage()" :class="$style.join">
+                        <div>회원가입</div>
                     </div>
                     <div
-                        v-on:click="loginWithKakao()"
+                        @click="loginWithKakao()"
                         :class="$style.kakaoLogin"
                     ></div>
                 </div>
@@ -149,34 +147,20 @@ export default class LoginView extends Vue {
 @import "@/assets/utils.scss";
 
 .index {
-    .container {
+    > .container {
         max-width: 1080px;
 
         padding: 20px 0px;
+        margin-inline: auto;
 
-        @include setCenter;
-
-        .form {
+        > .form {
             max-width: 600px;
 
-            margin-top: 20px;
             padding: 30px;
+            margin-top: 20px;
+            margin-inline: auto;
 
-            @include setCenter;
-
-            .infoBox {
-                margin-bottom: 20px;
-
-                text-align: center;
-
-                .info {
-                    font-size: 18px;
-
-                    color: #6b6b6b;
-                }
-            }
-
-            .title {
+            > .title {
                 padding: 20px 0px;
 
                 font-size: 40px;
@@ -185,21 +169,48 @@ export default class LoginView extends Vue {
                 text-align: center;
             }
 
-            .box {
+            > .infoBox {
+                margin-bottom: 20px;
+
+                text-align: center;
+
+                > .info {
+                    font-size: 18px;
+
+                    color: #6b6b6b;
+                }
+            }
+
+            > .box {
                 max-width: 240px;
+
+                margin-inline: auto;
 
                 display: flex;
                 flex-direction: column;
 
-                @include setCenter;
-
-                .textLabel {
+                > .label {
                     margin-bottom: 4px;
 
                     font-size: 16px;
                 }
 
-                .orBox {
+                > .input {
+                    padding: 4px;
+
+                    border: none;
+                    border-bottom: solid 1px #a7a5a57e;
+
+                    outline: none;
+                }
+
+                > .button {
+                    margin-inline: auto;
+
+                    @include authButton;
+                }
+
+                > .or {
                     position: relative;
 
                     margin-top: 20px;
@@ -207,7 +218,7 @@ export default class LoginView extends Vue {
 
                     text-align: center;
 
-                    .orBar {
+                    > .bar {
                         position: absolute;
 
                         width: 100%;
@@ -217,7 +228,7 @@ export default class LoginView extends Vue {
                         border-bottom: 1px solid #a7a5a57e;
                     }
 
-                    .orText {
+                    > .text {
                         max-width: 50px;
 
                         padding: 12px 10px;
@@ -231,27 +242,12 @@ export default class LoginView extends Vue {
                     }
                 }
 
-                .input {
-                    padding: 4px;
-
-                    border: none;
-                    border-bottom: solid 1px #a7a5a57e;
-
-                    outline: none;
-                }
-
-                .button {
-                    @include authButton;
-
-                    @include setCenter;
-                }
-
-                .joinBox {
+                > .join {
                     margin-bottom: 20px;
 
                     text-align: center;
 
-                    .join {
+                    > div {
                         font-size: 16px;
 
                         color: #6b6b6b;
@@ -263,10 +259,10 @@ export default class LoginView extends Vue {
                     }
                 }
 
-                .kakaoLogin {
-                    @include kakaoButton;
+                > .kakaoLogin {
+                    margin-inline: auto;
 
-                    @include setCenter;
+                    @include kakaoButton;
                 }
             }
         }
