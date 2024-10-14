@@ -7,7 +7,7 @@
                         width: getProgressPercent,
                     }"
                     :class="$style.progress"
-                ></div>
+                />
             </div>
             <div
                 :style="{
@@ -20,34 +20,32 @@
         </div>
         <div :class="$style.container">
             <div v-if="!resultComplete" :class="$style.section">
-                <div v-if="!pendingResult" :class="$style.mark"></div>
+                <div v-if="!pendingResult" :class="$style.mark" />
                 <div :class="$style.title">
                     {{ getTestTitle }}
                 </div>
-                <div :class="$style.selectBox">
+                <div :class="$style.selects">
                     <div
                         v-for="(select, index) in getTestArray"
                         :key="index"
                         :class="$style.box"
                     >
                         <div
-                            v-on:click="updateProgress(index)"
+                            @click="updateProgress(index)"
                             :class="$style.select"
                         >
                             {{ select.title }}
                         </div>
                     </div>
-                    <div v-if="pendingResult" :class="$style.pendigBox">
-                        <div :class="$style.pendigText">
-                            답변을 생성하는 중...
-                        </div>
+                    <div v-if="pendingResult" :class="$style.pending">
+                        <div :class="$style.text">답변을 생성하는 중...</div>
                         <div>
                             <LoadingIndicator />
                         </div>
                     </div>
                 </div>
             </div>
-            <div v-if="resultComplete" :class="$style.resultBox">
+            <div v-if="resultComplete" :class="$style.result">
                 <Result
                     :result="result"
                     :selectTestID="selectTest"
@@ -165,6 +163,14 @@ export default class TestView extends Vue {
         this.$forceUpdate();
     }
 
+    mounted() {
+        this.loadTest();
+    }
+
+    beforeDestroy() {
+        this.$store.commit("setSelectedTestName", undefined);
+    }
+
     updateProgressApi(selectNumber: number) {
         api(
             "test/update",
@@ -257,70 +263,62 @@ export default class TestView extends Vue {
 
         return this.test.questions[this.progressNumber]?.selection;
     }
-
-    mounted() {
-        this.loadTest();
-    }
-
-    beforeDestroy() {
-        this.$store.commit("setSelectedTestName", undefined);
-    }
 }
 </script>
 
 <style lang="scss" module>
 @import "@/assets/utils.scss";
+
 .index {
     width: 100%;
     height: auto;
 
-    .progressBar {
-        .gauge {
+    > .progressBar {
+        > .gauge {
             width: 100%;
-
             height: 2px;
 
             background-color: #63ac9b83;
 
-            .progress {
+            > .progress {
                 height: 100%;
 
                 background-color: #63ac9b;
             }
         }
 
-        .text {
-            margin-top: 10px;
-
+        > .text {
             font-size: 16px;
-
             text-align: end;
+
+            margin-top: 10px;
         }
     }
 
-    .container {
-        @include setCenter;
+    > .container {
+        margin-inline: auto;
 
-        .section {
+        > .section {
             margin-top: 80px;
 
-            .mark {
+            > .mark {
                 width: 50px;
                 height: 50px;
+
+                margin-inline: auto;
 
                 background-image: url("/src/assets/question-and-answer.png");
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center;
-
-                @include setCenter;
             }
 
-            .title {
+            > .title {
                 max-width: 500px;
 
                 margin-top: 10px;
                 margin-bottom: 40px;
+                margin-inline: auto;
 
                 white-space: pre-wrap;
 
@@ -328,7 +326,6 @@ export default class TestView extends Vue {
 
                 text-align: center;
 
-                @include setCenter;
                 @include mobile {
                     max-width: 320px;
 
@@ -336,9 +333,10 @@ export default class TestView extends Vue {
                 }
             }
 
-            .selectBox {
+            > .selects {
                 padding-inline: 20px;
-                .box {
+
+                > .box {
                     max-width: 400px;
 
                     margin-inline: auto;
@@ -347,14 +345,12 @@ export default class TestView extends Vue {
                         max-width: 320px;
                     }
 
-                    .select {
+                    > .select {
                         font-size: 16px;
-
-                        margin-top: 10px;
+                        text-align: center;
 
                         padding: 20px 24px;
-
-                        text-align: center;
+                        margin-top: 10px;
 
                         border-radius: 5px;
 
@@ -372,12 +368,12 @@ export default class TestView extends Vue {
                         }
                     }
                 }
-                .pendigBox {
-                    margin-top: 10px;
-
+                > .pending {
                     text-align: center;
 
-                    .pendigText {
+                    margin-top: 10px;
+
+                    > .text {
                         padding: 10px 24px;
 
                         font-size: 24px;
