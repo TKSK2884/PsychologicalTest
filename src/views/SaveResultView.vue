@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.index">
-        <div :class="$style.container"></div>
+        <div :class="$style.container" />
     </div>
 </template>
 
@@ -47,6 +47,7 @@ export default class SaveResultView extends Vue {
 
         return this.$router.push("/");
     }
+
     mounted() {
         if (this.saveResultToken == "") {
             return this.$router.push("/");
@@ -65,7 +66,7 @@ export default class SaveResultView extends Vue {
     width: 100%;
     height: auto;
 
-    .container {
+    > .container {
         width: 100%;
         height: auto;
     }

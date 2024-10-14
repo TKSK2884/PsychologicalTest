@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.index">
-        <div :class="$style.container"></div>
+        <div :class="$style.container" />
     </div>
 </template>
 
@@ -12,6 +12,7 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class PathFinderView extends Vue {
     storeUrl: string = this.$store.state.url ?? "";
+
     mounted() {
         if (this.storeUrl != "") {
             this.$store.commit("setUrl", undefined);
@@ -23,13 +24,10 @@ export default class PathFinderView extends Vue {
 </script>
 
 <style lang="scss" module>
-@import "@/assets/utils.scss";
-
 .index {
     width: 100%;
     height: auto;
-
-    .container {
+    > .container {
         width: 100%;
         height: auto;
     }

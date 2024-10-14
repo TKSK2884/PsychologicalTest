@@ -5,7 +5,7 @@
                 <div :class="$style.logo" />
             </router-link>
             <div :class="$style.title">GPTMind</div>
-            <div :class="[$style.textBox, $style.copyright]">
+            <div :class="$style.copyright">
                 Copyright(c) by 조현석 |
                 <span :class="$style.underLine">Open Source License</span>
             </div>
@@ -31,19 +31,19 @@
                     <div
                         v-for="test in getTestArray"
                         :key="test.id"
-                        :class="$style.box"
+                        :class="$style.tests"
                     >
                         <router-link
                             :to="`/test?selectTest=${getTestId(test)}`"
                         >
-                            <div :class="$style.testLink">
+                            <div :class="$style.test">
                                 {{ getTestName(test) }}
                             </div>
                         </router-link>
                     </div>
                 </div>
             </div>
-            <div v-if="!isLogIn" :class="[$style.textBox, $style.infoBox]">
+            <div v-if="!isLogIn" :class="$style.infoBox">
                 <div :class="$style.info">
                     테스트는 비회원 상태에서도 가능합니다.
                 </div>
@@ -51,7 +51,7 @@
                     로그인 하시면 테스트 진행 결과를 보관할 수 있습니다.
                 </div>
             </div>
-            <div v-else :class="[$style.textBox, $style.infoBox]">
+            <div v-else :class="$style.infoBox">
                 <div :class="$style.info">로그인 계정:{{ loginNickname }}</div>
 
                 <div :class="$style.info">테스트 결과는 저장됩니다</div>
@@ -63,10 +63,7 @@
                 </router-link>
                 <div :class="$style.bar">|</div>
 
-                <div
-                    v-on:click="logout()"
-                    :class="[$style.link, $style.logout]"
-                >
+                <div @click="logout()" :class="[$style.link, $style.logout]">
                     로그아웃
                 </div>
             </div>
@@ -237,68 +234,32 @@ export default class HomeView extends Vue {
     width: 100%;
     height: auto;
 
-    .container {
+    > .container {
         max-width: 1080px;
 
-        margin-left: auto;
-        margin-right: auto;
+        margin-inline: auto;
 
-        .logo {
+        > a > .logo {
             width: 70px;
             height: 70px;
 
             margin-top: 120px;
+            margin-inline: auto;
 
             background-image: url("/src/assets/logo.png");
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
-
-            @include setCenter;
         }
 
-        .title {
-            margin-top: 10px;
-
+        > .title {
             font-size: 60px;
-
             text-align: center;
-        }
 
-        .textBox {
             margin-top: 10px;
-
-            font-size: 12px;
-
-            text-align: center;
-
-            .underLine {
-                text-decoration: underline;
-            }
         }
 
-        .linkBox {
-            display: flex;
-            justify-content: center;
-
-            .bar {
-                padding: 0px 10px;
-            }
-
-            .link {
-                text-decoration: underline;
-
-                color: #727272;
-            }
-
-            .logout {
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-        }
-
-        .copyright {
+        > .copyright {
             margin-top: 2px;
 
             font-size: 14px;
@@ -306,10 +267,36 @@ export default class HomeView extends Vue {
             text-align: center;
 
             color: #666666;
+
+            > .underLine {
+                text-decoration: underline;
+            }
         }
 
-        .section {
-            .frame {
+        > .linkBox {
+            display: flex;
+            justify-content: center;
+
+            > .bar {
+                padding: 0px 10px;
+            }
+
+            > a > .link,
+            > .logout {
+                text-decoration: underline;
+
+                color: #727272;
+            }
+
+            > .logout {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        > .section {
+            > .frame {
                 display: flex;
                 flex-direction: column-reverse;
 
@@ -319,7 +306,7 @@ export default class HomeView extends Vue {
                     margin-top: 35px;
                 }
 
-                .message {
+                > .message {
                     font-size: 24px;
 
                     text-align: center;
@@ -329,47 +316,48 @@ export default class HomeView extends Vue {
                     }
                 }
 
-                .box {
-                    @include setCenter;
+                > .tests {
+                    margin-inline: auto;
 
-                    .testLink {
-                        width: 300px;
+                    > a {
+                        text-decoration: none;
 
-                        font-size: 24px;
-                        text-align: center;
+                        color: #101010;
 
-                        padding: 16px 20px;
-                        margin-top: 16px;
+                        > .test {
+                            width: 300px;
 
-                        border-radius: 5px;
+                            font-size: 24px;
+                            text-align: center;
 
-                        box-shadow: 0px 0px 1px #727272;
+                            padding: 16px 20px;
+                            margin-top: 16px;
+                            margin-inline: auto;
 
-                        @include setCenter;
+                            border-radius: 5px;
 
-                        &:hover {
-                            cursor: pointer;
+                            box-shadow: 0px 0px 1px #727272;
 
-                            background-color: #f2f2f2;
+                            &:hover {
+                                cursor: pointer;
+
+                                background-color: #f2f2f2;
+                            }
                         }
                     }
                 }
             }
-
-            a {
-                text-decoration: none;
-
-                color: #101010;
-            }
         }
 
-        .infoBox {
+        > .infoBox {
+            text-align: center;
+
             margin-top: 36px;
             margin-bottom: 48px;
 
             color: #666666;
 
-            .info {
+            > .info {
                 padding: 2px;
 
                 font-size: 16px;

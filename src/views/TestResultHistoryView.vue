@@ -1,7 +1,7 @@
 <template>
     <div :class="$style.index">
         <div :class="$style.container">
-            <div v-if="!isSelectedResult">
+            <template v-if="!isSelectedResult">
                 <div :class="$style.section">
                     <div :class="$style.infoBox">
                         <div :class="$style.title">테스트 결과 목록</div>
@@ -10,7 +10,7 @@
                         </div>
                     </div>
                     <div
-                        :class="$style.box"
+                        :class="$style.result"
                         v-for="(result, index) in resultArray"
                         :key="index"
                     >
@@ -28,17 +28,17 @@
                         </div>
 
                         <div
-                            v-on:click="getResult(result)"
+                            @click="getResult(result)"
                             :class="$style.arrowButton"
-                        ></div>
+                        />
                     </div>
                 </div>
-                <div :class="$style.buttonBox">
+                <div :class="$style.back">
                     <router-link :to="`/`">
                         <div :class="$style.button">처음으로</div>
                     </router-link>
                 </div>
-            </div>
+            </template>
         </div>
         <Result
             v-if="isSelectedResult"
@@ -100,6 +100,10 @@ export default class TestResultHistoryView extends Vue {
         this.$forceUpdate();
     }
 
+    mounted() {
+        this.loadTestResult();
+    }
+
     getResult(content: ResultObject) {
         this.isSelectedResult = true;
         this.result = content.content;
@@ -130,10 +134,6 @@ export default class TestResultHistoryView extends Vue {
     getSelectTestID(content: ResultObject): number {
         return content.select_test ?? 0;
     }
-
-    mounted() {
-        this.loadTestResult();
-    }
 }
 </script>
 
@@ -143,47 +143,47 @@ export default class TestResultHistoryView extends Vue {
     width: 100%;
     height: auto;
 
-    .container {
-        @include setCenter;
-        .section {
-            .infoBox {
+    > .container {
+        margin-inline: auto;
+
+        > .section {
+            > .infoBox {
                 margin-top: 60px;
 
                 text-align: center;
-                .title {
-                    margin: 12px 0px;
+                > .title {
+                    margin-block: 12px;
 
                     font-size: 24px;
                 }
-                .info {
+                > .info {
                     font-size: 16px;
                 }
             }
 
-            .box {
+            .result {
                 width: 450px;
 
-                margin: 16px 0px;
                 padding: 12px;
+                margin-block: 16px;
+                margin-inline: auto;
 
                 display: flex;
 
                 border-bottom: 1px solid #7272727c;
 
-                @include setCenter;
-
-                .testTitle {
+                > .testTitle {
                     width: 120px;
 
-                    .selectTest {
+                    > .selectTest {
                         font-size: 16px;
                     }
-                    .time {
+                    > .time {
                         font-size: 12px;
                     }
                 }
 
-                .content {
+                > .content {
                     width: 250px;
                     height: 30px;
 
@@ -198,7 +198,7 @@ export default class TestResultHistoryView extends Vue {
                 }
             }
 
-            .arrowButton {
+            > .arrowButton {
                 padding: 6px;
 
                 margin-left: auto;
@@ -214,30 +214,29 @@ export default class TestResultHistoryView extends Vue {
             }
         }
 
-        .buttonBox {
+        > .back {
             margin-top: 20px;
 
             display: flex;
             justify-content: center;
 
-            a {
+            > a {
                 text-decoration: none;
 
                 color: black;
 
-                .button {
+                > .button {
                     min-width: 180px;
                     min-height: 60px;
 
-                    margin: 0 10px;
+                    text-align: center;
 
                     padding: 20px;
+                    margin: 0 10px;
 
                     border-radius: 10px;
 
                     box-shadow: 0px 0px 1px #727272;
-
-                    text-align: center;
                 }
             }
         }

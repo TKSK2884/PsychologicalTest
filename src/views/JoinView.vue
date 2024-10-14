@@ -13,39 +13,39 @@
                     <div :class="$style.info">동의하는 것으로 간주합니다.</div>
                 </div>
                 <div :class="$style.box">
-                    <div :class="$style.textLabel">ID</div>
+                    <div :class="$style.label">ID</div>
                     <input
                         v-model="inputID"
                         :class="$style.input"
                         type="text"
                     />
-                    <div :class="$style.textLabel">Password</div>
+                    <div :class="$style.label">Password</div>
                     <input
                         v-model="inputPassword"
                         :class="$style.input"
                         type="password"
                     />
-                    <div :class="$style.textLabel">Password Confirm</div>
+                    <div :class="$style.label">Password Confirm</div>
                     <input
                         v-model="inputCheckPassword"
                         :class="$style.input"
                         type="password"
                     />
-                    <div :class="$style.textLabel">Nickname</div>
+                    <div :class="$style.label">Nickname</div>
                     <input
                         v-model="inputNickname"
                         :class="$style.input"
                         type="text"
                     />
-                    <div v-on:click="createAccount" :class="$style.button">
+                    <div @click="createAccount" :class="$style.button">
                         회원 가입
                     </div>
-                    <div :class="$style.orBox">
-                        <div :class="$style.orBar"></div>
-                        <div :class="$style.orText">또는</div>
+                    <div :class="$style.or">
+                        <div :class="$style.bar" />
+                        <div :class="$style.text">또는</div>
                     </div>
                     <div
-                        v-on:click="loginWithKakao"
+                        @click="loginWithKakao"
                         :class="$style.kakaoLogin"
                     ></div>
                 </div>
@@ -163,40 +163,37 @@ export default class JoinView extends Vue {
 @import "@/assets/utils.scss";
 
 .index {
-    .container {
+    > .container {
         max-width: 1080px;
 
-        padding: 20px 0px;
+        padding-block: 20px;
+        margin-inline: auto;
 
-        @include setCenter;
-
-        .form {
+        > .form {
             max-width: 600px;
 
-            margin-top: 20px;
             padding: 30px;
+            margin-top: 20px;
+            margin-inline: auto;
 
-            @include setCenter;
-
-            .title {
-                padding: 20px 0px;
-
+            > .title {
                 font-size: 40px;
-
                 text-align: center;
+
+                padding-block: 20px;
             }
 
-            .infoBox {
-                margin-bottom: 20px;
-
+            > .infoBox {
                 text-align: center;
 
-                .info {
+                margin-bottom: 20px;
+
+                > .info {
                     font-size: 18px;
 
                     color: #6b6b6b;
 
-                    .underLine {
+                    > .underLine {
                         text-decoration: underline;
 
                         color: #000000;
@@ -204,52 +201,21 @@ export default class JoinView extends Vue {
                 }
             }
 
-            .box {
+            > .box {
                 max-width: 240px;
+
+                margin-inline: auto;
 
                 display: flex;
                 flex-direction: column;
 
-                @include setCenter;
-
-                .textLabel {
+                > .label {
                     margin-bottom: 4px;
 
                     font-size: 16px;
                 }
 
-                .orBox {
-                    position: relative;
-
-                    margin-top: 20px;
-                    margin-bottom: 20px;
-
-                    text-align: center;
-
-                    .orBar {
-                        position: absolute;
-
-                        z-index: -1;
-                        width: 100%;
-
-                        top: 50%;
-
-                        border-bottom: 1px solid #a7a5a57e;
-                    }
-
-                    .orText {
-                        max-width: 50px;
-
-                        padding: 12px 10px;
-
-                        background-color: #ffffff;
-                        color: #999999;
-
-                        @include setCenter;
-                    }
-                }
-
-                .input {
+                > .input {
                     padding: 4px;
 
                     border: none;
@@ -258,19 +224,45 @@ export default class JoinView extends Vue {
                     outline: none;
                 }
 
-                .button {
+                > .button {
+                    margin-inline: auto;
+
                     @include authButton;
-                    @include setCenter;
                 }
 
-                .kakaoLogin {
+                > .or {
+                    text-align: center;
+
+                    position: relative;
+
+                    margin-block: 20px;
+
+                    .bar {
+                        width: 100%;
+
+                        position: absolute;
+                        top: 50%;
+
+                        border-bottom: 1px solid #a7a5a57e;
+                    }
+
+                    > .text {
+                        max-width: 50px;
+
+                        color: #999999;
+                        background-color: #ffffff;
+
+                        padding: 12px 10px;
+                        margin-inline: auto;
+
+                        position: relative;
+                    }
+                }
+
+                > .kakaoLogin {
+                    margin-inline: auto;
+
                     @include kakaoButton;
-
-                    @include setCenter;
-                }
-
-                .kakaoLogin:hover {
-                    cursor: pointer;
                 }
             }
         }
