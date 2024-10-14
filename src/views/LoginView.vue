@@ -27,7 +27,7 @@
                     <div @click="tryLogin()" :class="$style.button">로그인</div>
 
                     <div :class="$style.or">
-                        <div :class="$style.bar"></div>
+                        <div :class="$style.bar" />
                         <div :class="$style.text">또는</div>
                     </div>
                     <div @click="goJoinPage()" :class="$style.join">
@@ -211,12 +211,11 @@ export default class LoginView extends Vue {
                 }
 
                 > .or {
-                    position: relative;
-
-                    margin-top: 20px;
-                    margin-bottom: 20px;
-
                     text-align: center;
+
+                    margin-block: 20px;
+
+                    position: relative;
 
                     > .bar {
                         position: absolute;
@@ -231,14 +230,13 @@ export default class LoginView extends Vue {
                     > .text {
                         max-width: 50px;
 
-                        padding: 12px 10px;
-
-                        background-color: #ffffff;
                         color: #999999;
+                        background-color: #ffffff;
+
+                        padding: 12px 10px;
+                        margin-inline: auto;
 
                         position: relative;
-
-                        @include setCenter;
                     }
                 }
 
