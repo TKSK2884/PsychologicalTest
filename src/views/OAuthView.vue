@@ -1,8 +1,6 @@
 <template>
     <div :class="$style.index">
-        <div :class="$style.container">
-            <div :class="$style.title"></div>
-        </div>
+        <div :class="$style.container" />
     </div>
 </template>
 
@@ -64,14 +62,10 @@ export default class OAuthView extends Vue {
     width: 100%;
     height: auto;
 
-    .container {
+    > .container {
         width: 800px;
 
-        margin-left: auto;
-        margin-right: auto;
-        .title {
-            font-size: 24px;
-        }
+        margin-inline: auto;
     }
 }
 </style>
