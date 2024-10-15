@@ -15,8 +15,6 @@ export default class LoadingIndicater extends Vue {}
 </script>
 
 <style lang="scss" module>
-@import "@/assets/utils.scss";
-
 .index {
     width: 100%;
     height: 100%;

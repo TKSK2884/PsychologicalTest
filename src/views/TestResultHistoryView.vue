@@ -10,9 +10,9 @@
                         </div>
                     </div>
                     <div
-                        :class="$style.result"
                         v-for="(result, index) in resultArray"
                         :key="index"
+                        :class="$style.result"
                     >
                         <div :class="$style.testTitle">
                             <div :class="$style.selectTest">
@@ -27,10 +27,7 @@
                             {{ getContent(result) }}
                         </div>
 
-                        <div
-                            @click="getResult(result)"
-                            :class="$style.arrowButton"
-                        />
+                        <div @click="getResult(result)" :class="$style.arrow" />
                     </div>
                 </div>
                 <div :class="$style.back">
@@ -161,7 +158,7 @@ export default class TestResultHistoryView extends Vue {
                 }
             }
 
-            .result {
+            > .result {
                 width: 450px;
 
                 padding: 12px;
@@ -196,20 +193,19 @@ export default class TestResultHistoryView extends Vue {
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
-            }
 
-            > .arrowButton {
-                padding: 6px;
+                > .arrow {
+                    padding: 6px;
+                    margin-left: auto;
 
-                margin-left: auto;
+                    background-image: url("/src/assets/arrow.png");
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    background-position: center;
 
-                background-image: url("/src/assets/arrow.png");
-                background-repeat: no-repeat;
-                background-size: contain;
-                background-position: center;
-
-                &:hover {
-                    cursor: pointer;
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
         }

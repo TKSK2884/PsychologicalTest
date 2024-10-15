@@ -2,7 +2,7 @@
     <div :class="[$style.index, 'general-background-color']">
         <div :class="$style.container">
             <div :class="$style.navigation">
-                <div :class="[$style.section]">
+                <div :class="$style.section">
                     <router-link :to="`/`">
                         <div :class="$style.box">
                             <div :class="$style.logo" />
@@ -10,7 +10,7 @@
                         </div>
                     </router-link>
 
-                    <div :class="[$style.text, $style.selectTest]">
+                    <div :class="$style.test">
                         {{ selectedTestName }}
                     </div>
                 </div>
@@ -20,7 +20,6 @@
 </template>
 
 <script lang="ts">
-import { watch } from "vue";
 import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({
@@ -42,64 +41,60 @@ export default class Header extends Vue {
 @import "@/assets/utils.scss";
 
 .index {
-    .container {
+    > .container {
         max-width: 1080px;
         height: 80px;
 
         padding: 20px;
+        margin-inline: auto;
 
-        @include setCenter;
-
-        .title {
-            display: inline-block;
-        }
-
-        .navigation {
+        > .navigation {
             display: flex;
 
-            a {
-                text-decoration: none;
-            }
-
-            .section {
+            > .section {
                 display: flex;
-            }
-            .box {
-                display: flex;
-                .logo {
-                    padding: 20px;
 
-                    margin-right: 4px;
+                > a {
+                    text-decoration: none;
 
-                    background-image: url("@/assets/logo.png");
-                    background-size: cover;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                }
+                    > .box {
+                        display: flex;
 
-                .link {
-                    font-size: 32px;
+                        > .logo {
+                            padding: 20px;
+                            margin-right: 4px;
 
-                    padding: 0px 24px;
+                            background-image: url("@/assets/logo.png");
+                            background-size: cover;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                        }
 
-                    color: #000000;
+                        > .link {
+                            font-size: 32px;
 
-                    @include mobile {
-                        font-size: 28px;
+                            color: #000000;
+
+                            padding: 0px 24px;
+
+                            @include mobile {
+                                font-size: 28px;
+                            }
+                        }
                     }
                 }
-            }
-            
-            .selectTest {
-                margin-left: 18px;
-                padding: 6px;
 
-                font-size: 26px;
+                > .test {
+                    font-size: 26px;
 
-                @include mobile {
-                    font-size: 18px;
+                    margin-left: 18px;
+                    padding: 6px;
 
-                    margin-left: 6px;
+                    @include mobile {
+                        font-size: 18px;
+
+                        margin-left: 6px;
+                    }
                 }
             }
         }
