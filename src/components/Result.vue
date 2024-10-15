@@ -15,7 +15,7 @@
                 </div>
 
                 <div :class="$style.buttonBox">
-                    <div v-on:click="reTryTest()" :class="$style.button">
+                    <div @click="reTryTest()" :class="$style.button">
                         다시하기
                     </div>
                     <router-link to="/">
@@ -40,8 +40,8 @@
                         테스트 결과가 저장되었습니다.
                     </div>
                     <div
-                        v-on:click="goHistory()"
-                        :class="[$style.text, $style.historyLink]"
+                        @click="goHistory()"
+                        :class="[$style.text, $style.history]"
                     >
                         <span :class="$style.underLine">결과 목록 보기</span>
                     </div>
@@ -113,14 +113,14 @@ export default class Result extends Vue {
     width: 100%;
     height: auto;
 
-    .progressBar {
-        .gauge {
+    > .progressBar {
+        > .gauge {
             width: 100%;
             height: 2px;
 
             background-color: #63ac9b83;
 
-            .progress {
+            > .progress {
                 width: 100%;
                 height: 100%;
 
@@ -128,81 +128,76 @@ export default class Result extends Vue {
             }
         }
 
-        .text {
-            margin-top: 10px;
-
+        > .text {
             font-size: 16px;
-
             text-align: end;
+
+            margin-top: 10px;
         }
     }
 
-    .container {
+    > .container {
         max-width: 800px;
 
         word-break: keep-all;
 
-        @include setCenter;
+        margin-inline: auto;
+
         @include mobile {
             max-width: 320px;
         }
-        .section {
+
+        > .section {
             margin-top: 80px;
 
-            .title {
+            > .title {
                 max-width: 500px;
+
+                font-size: 28px;
+                text-align: center;
+                white-space: pre-wrap;
 
                 margin-top: 10px;
                 margin-bottom: 40px;
+                margin-inline: auto;
 
-                white-space: pre-wrap;
-
-                font-size: 28px;
-
-                text-align: center;
-
-                @include setCenter;
                 @include mobile {
                     max-width: 320px;
                 }
             }
 
-            .result {
-                padding: 20px 24px;
-
+            > .result {
                 text-align: center;
                 white-space: pre-wrap;
+
+                padding: 20px 24px;
             }
 
-            .buttonBox {
+            > .buttonBox {
                 margin-top: 20px;
 
                 display: flex;
-
                 justify-content: center;
 
-                a {
+                > a {
                     text-decoration: none;
                 }
 
                 .button {
                     max-width: 180px;
 
-                    margin: 0 10px;
+                    text-align: center;
 
+                    color: #000000;
+
+                    margin: 0 10px;
                     padding: 16px 60px;
 
                     border-radius: 10px;
 
                     box-shadow: 0px 0px 1px #727272;
 
-                    text-align: center;
-
-                    color: #000000;
-
                     @include mobile {
-                        // max-width: 120px;
-
                         padding: 16px 40px;
                     }
 
@@ -213,30 +208,24 @@ export default class Result extends Vue {
                 }
             }
 
-            .textBox {
-                margin-top: 20px;
-
+            > .textBox {
                 text-align: center;
 
-                .text {
-                    .underLine {
+                margin-top: 20px;
+
+                > .text {
+                    > .underLine {
                         text-decoration: underline;
 
-                        a {
+                        > a {
                             color: black;
                         }
                     }
                 }
 
-                .historyLink {
+                > .history {
                     margin-top: 5px;
                     margin-bottom: 20px;
-
-                    a {
-                        text-decoration: none;
-
-                        color: #000000;
-                    }
 
                     &:hover {
                         cursor: pointer;
