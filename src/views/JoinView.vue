@@ -121,7 +121,7 @@ export default class JoinView extends Vue {
         }
 
         api(
-            "memeber/join",
+            "member/join",
             "post",
             {
                 id: this.inputID,
