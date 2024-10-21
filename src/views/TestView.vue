@@ -119,7 +119,7 @@ export default class TestView extends Vue {
 
         let alertErrorMessage: string = errorMessage(errorCode);
 
-        alert(alertErrorMessage);
+        // alert(alertErrorMessage);
 
         return;
     }
