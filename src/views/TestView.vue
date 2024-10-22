@@ -26,6 +26,7 @@
                 </div>
                 <div :class="$style.selects">
                     <div
+                        v-if="!loading"
                         v-for="(select, index) in getTestArray"
                         :key="index"
                         :class="$style.box"
@@ -36,6 +37,9 @@
                         >
                             {{ select.title }}
                         </div>
+                    </div>
+                    <div v-if="loading">
+                        <LoadingIndicator />
                     </div>
                     <div v-if="pendingResult" :class="$style.pending">
                         <div :class="$style.text">답변을 생성하는 중...</div>
@@ -89,6 +93,8 @@ export default class TestView extends Vue {
 
     progressNumber: number = 0;
 
+    loading: boolean = false;
+
     get getProgressPercent(): string {
         if (this.test == null) return "0%";
 
@@ -100,6 +106,8 @@ export default class TestView extends Vue {
     }
 
     loadTest() {
+        this.loading = true;
+
         api(
             "test",
             "get",
@@ -111,7 +119,10 @@ export default class TestView extends Vue {
             this
         )
             .catch(this.loadError)
-            .then(this.loadSuccess);
+            .then(this.loadSuccess)
+            .finally(() => {
+                this.loading = false;
+            });
     }
 
     loadError(err: any) {
@@ -119,7 +130,7 @@ export default class TestView extends Vue {
 
         let alertErrorMessage: string = errorMessage(errorCode);
 
-        // alert(alertErrorMessage);
+        alert(alertErrorMessage);
 
         return;
     }
