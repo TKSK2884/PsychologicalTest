@@ -106,8 +106,6 @@ export default class TestView extends Vue {
     }
 
     loadTest() {
-        this.loading = true;
-
         api(
             "test",
             "get",
@@ -119,10 +117,7 @@ export default class TestView extends Vue {
             this
         )
             .catch(this.loadError)
-            .then(this.loadSuccess)
-            .finally(() => {
-                this.loading = false;
-            });
+            .then(this.loadSuccess);
     }
 
     loadError(err: any) {
@@ -183,6 +178,8 @@ export default class TestView extends Vue {
     }
 
     updateProgressApi(selectNumber: number) {
+        this.loading = true;
+
         api(
             "test/update",
             "post",
@@ -194,7 +191,10 @@ export default class TestView extends Vue {
             this
         )
             .catch(this.loadError)
-            .then(this.updateSuccess);
+            .then(this.updateSuccess)
+            .finally(() => {
+                this.loading = false;
+            });
     }
 
     updateSuccess(res: any) {
